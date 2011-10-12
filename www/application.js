@@ -1,5 +1,5 @@
 $(function(){
-    var UserSecretView = Backbone.View.extend({
+    UserSecretView = Backbone.View.extend({
         events: {
             "click #entry_submit":      "next"
         },
@@ -12,7 +12,13 @@ $(function(){
 
     });
 
-    var Entry = Backbone.Model.extend({ });
+    Entry = Backbone.Model.extend({ 
+          validate: function(attrs) {
+            if (attrs.secret.length < 5) {
+                return "invalid secret added";
+            }
+        } 
+    });
 
     var App = new UserSecretView;
     var entry = new Entry;
