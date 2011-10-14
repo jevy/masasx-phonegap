@@ -5,33 +5,65 @@
   
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta charset="utf-8">
-
-
-	<!-- iPad/iPhone specific css below, add after your main css >
-	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
-	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
-	-->
-	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
-	<script type="text/javascript" charset="utf-8" src="phonegap-1.1.0.js"></script>
         <link rel="stylesheet" href="jquery.mobile-1.0rc1.min.css" />
-        <script src="jquery-1.6.4.min.js"></script>
-        <script src="jquery.mobile-1.0rc1.min.js"></script>
-        <script src="underscore-min.js"></script>
-        <script src="backbone-min.js"></script>
-        <script src="application.js"></script>
-        <script type="text/javascript">
-            /*document.write("<script type='text/javascript' charset='utf-8' src='application.js?" + Math.random() + "'></" + "script>");*/
+	<script type="text/javascript" charset="utf-8" src="jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="underscore-min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="backbone-min.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            document.write("<script type='text/javascript' charset='utf-8' src='jquery.mobile-1.0rc1.min.js?" + Math.random() + "'></" + "script>");
+            document.write("<script type='text/javascript' charset='utf-8' src='application.js?" + Math.random() + "'></" + "script>");
         </script>
   </head>
   <body>
-    <div data-role='page'>
+    <div data-role='page' id='home'>
         <div data-role="header">
-            Hey, it's Phonegap!
+            <h1>MASAS Mobile</h1>
         </div>
         <div data-role="content">
-            <p><label for="entry_secret">Secret</label><input id="entry_secret" name="entry[secret]" size="30" type="text" /></p> 
-            <p><input id="entry_submit" type="submit" value="Next" /></p>
         </div>
     </div>
+
+    <!--<div data-role='page' id='input_secret'>
+        <div data-role="header">
+            <h1>Sign In</h1>
+        </div>
+        <div data-role="content">
+            <h3>Welcome to the Sandbox MASAS Hub</h3>
+            <form>
+                <p>
+                    <label for="entry_secret">MASAS Secret Key</label>
+                    <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
+                </p> 
+                <p><a href="#select_geo" id='next' data-role="button">Next</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div data-role='page' id='select_geo'>
+        <div data-role="header">
+            <h1>New Entry (Step 1)</h1>
+        </div>
+        <div data-role="content">
+            <p><a href="confirm_geo.html" id='use_current_location' data-role="button">Use Current Location</a></p>
+            <h2 style="text-align:center;">OR</h2>
+            <h3>Enter an Address</h3>
+                <p>
+                    <label for="street">Street</label>
+                    <input id="street" name="entry[street]" size="15" type="text" />
+                </p> 
+                <p>
+                    <label for="city">City</label>
+                    <input id="city" name="entry[city]" size="15" type="text" />
+                </p> 
+                <p>
+                    <label for="province">Province</label>
+                    <input id="province" name="entry[province]" size="15" type="text" />
+                </p> 
+            <p><a href="confirm_geo.html" id='manual_geolocate' data-role="button">Find Location</a></p>
+            <p><a href="#input_secret" id='manual_geolocate' data-role="button">Back</a></p>
+        </div>
+
+    </div> -->
   </body>
 </html>
