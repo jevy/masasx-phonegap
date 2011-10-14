@@ -8,6 +8,10 @@
     child.__super__ = parent.prototype;
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  $('#home').live('pagecreate', function() {
+    this.template_data = _.template('<div data-role="header">\n    <h1>Sign In</h1>\n</div>\n    <h3>Welcome to the Sandbox MASAS Hub</h3>\n    <form>\n        <p>\n            <label for="entry_secret">MASAS Secret Key</label>\n            <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />\n        </p> \n        <p><a href="#select_geo" id=\'next\' data-role="button">Next</a></p>\n    </form>\n</div>');
+    return $('.ui-content').html(this.template_data);
+  });
   app = {
     activePage: function() {
       return $(".ui-page-active");
@@ -42,11 +46,7 @@
     }
     HomeView.prototype.render = function() {
       var entry;
-      entry = new Entry;
-      this.el.find('.ui-content').html(this.template({
-        entry: Entry
-      }));
-      return app.reapplyStyles(this.el);
+      return entry = new Entry;
     };
     return HomeView;
   })();

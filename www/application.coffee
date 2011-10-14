@@ -3,6 +3,24 @@
 # Some helper methods
 #
 
+
+$('#home').live 'pagecreate', ->
+    @template_data = _.template('''
+        <div data-role="header">
+            <h1>Sign In</h1>
+        </div>
+            <h3>Welcome to the Sandbox MASAS Hub</h3>
+            <form>
+                <p>
+                    <label for="entry_secret">MASAS Secret Key</label>
+                    <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
+                </p> 
+                <p><a href="#select_geo" id='next' data-role="button">Next</a></p>
+            </form>
+        </div>
+    ''')
+    $('.ui-content').html(@template_data)
+
 app =
   activePage: ->
     $(".ui-page-active")
@@ -212,9 +230,9 @@ class HomeView extends Backbone.View
     
     entry = new Entry
 
-    @el.find('.ui-content').html(@template({entry : Entry}))
+    #@el.find('.ui-content').html(@template({entry : Entry}))
     # A hacky way of reapplying the jquery mobile styles
-    app.reapplyStyles(@el)
+    #app.reapplyStyles(@el)
     
     
 #
