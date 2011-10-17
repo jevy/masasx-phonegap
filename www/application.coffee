@@ -3,39 +3,9 @@
 # Some helper methods
 #
 
-
-$('#home').live 'pagecreate', ->
-    @template_data = _.template('''
-        <div data-role="header">
-            <h1>Sign In</h1>
-        </div>
-            <h3>Welcome to the Sandbox MASAS Hub</h3>
-            <form>
-                <p>
-                    <label for="entry_secret">MASAS Secret Key</label>
-                    <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
-                </p> 
-                <p><a href="#select_geo" id='next' data-role="button">Next</a></p>
-            </form>
-        </div>
-    ''')
-    $('.ui-content').html(@template_data)
-
 app =
   activePage: ->
     $(".ui-page-active")
-    
-  redirectTo: (page) ->
-    $.mobile.changePage page
-  
-  reapplyStyles: (el) ->
-    el.find('div[data-role="fieldcontain"]').fieldcontain();
-    el.find('button[data-role="button"]').button();
-    el.find('input,textarea').textinput();
-    el.page()
-
-  goBack: ->
-    $.historyBack()
 
 #
 # Venue class
@@ -203,61 +173,35 @@ app =
   
 class Entry extends Backbone.Model
 
-class HomeView extends Backbone.View
+class SecretInputView extends Backbone.View
+
+  events:
+    "click a#next"  : "next"
+
+  constructor: ->
+    super
+    
+    @el = app.activePage()
+
+  render: ->
+    @delegateEvents()
+
+  next: ->
+    app.currentEntry.set({secret: $('#entry_secret').val()})
+
+class SelectGeoView extends Backbone.View
   constructor: ->
     super
     
     @el = app.activePage()
     
-    @template = _.template('''
-        <div data-role="header">
-            <h1>Sign In</h1>
-        </div>
-            <h3>Welcome to the Sandbox MASAS Hub</h3>
-            <form>
-                <p>
-                    <label for="entry_secret">MASAS Secret Key</label>
-                    <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
-                </p> 
-                <p><a href="#select_geo" id='next' data-role="button">Next</a></p>
-            </form>
-        </div>
-    ''')
-    
-    @render()
-    
-  render: =>
-    
-    entry = new Entry
-
-    #@el.find('.ui-content').html(@template({entry : Entry}))
-    # A hacky way of reapplying the jquery mobile styles
-    #app.reapplyStyles(@el)
-    
-    
-#
-# Our only controller
-#
-
-class HomeController extends Backbone.Router
-  routes :
-    "home"  : "home"
-
-  constructor: ->
-    super
-    @_views = {}
-
-  home : ->
-    @_views['home'] ||= new HomeView
-
-app.homeController = new HomeController()
-
 #
 # Start the app
 #  
 
 $(document).ready ->
-  Backbone.history.start()
-  app.homeController.home()
+  app.currentEntry = new Entry
+  app.currentView = new SecretInputView()
+  app.currentView.render()
   
 @app = app
