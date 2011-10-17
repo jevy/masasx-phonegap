@@ -16,6 +16,7 @@
         </script>
   </head>
   <body>
+
     <div data-role='page' id='secret_input'>
         <div data-role="header">
             <h1>Sign In</h1>
@@ -31,12 +32,13 @@
             </form>
         </div>
     </div>
+
     <div data-role='page' id='select_geo'>
         <div data-role="header">
-            <h1>New Entry (Step 1)</h1>
+            <h1>Input Location</h1>
         </div>
         <div data-role="content">
-            <p><a href="confirm_geo.html" id='use_current_location' data-role="button">Use Current Location</a></p>
+            <p><a href="#confirm_geo" id='use_current_location' data-role="button">Use Current Location</a></p>
             <h2 style="text-align:center;">OR</h2>
             <h3>Enter an Address</h3>
                 <p>
@@ -51,9 +53,18 @@
                     <label for="province">Province</label>
                     <input id="province" name="entry[province]" size="15" type="text" />
                 </p> 
-            <p><a href="confirm_geo.html" id='manual_geolocate' data-role="button">Find Location</a></p>
-            <p><a href="#input_secret" id='manual_geolocate' data-role="button">Back</a></p>
+            <p><a href="#confirm_geo" id='manual_geolocate' data-role="button">Find Location</a></p>
         </div>
     </div>
+
+    <div data-role='page' id='confirm_geo'>
+        <div data-role="header">
+            <h1>Confirm Location</h1>
+        </div>
+        <div data-role="content">
+            Map will go here
+        </div>
+    </div>
+
   </body>
 </html>

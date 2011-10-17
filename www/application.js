@@ -27,24 +27,44 @@
     };
     function SecretInputView() {
       SecretInputView.__super__.constructor.apply(this, arguments);
-      this.el = app.activePage();
+      this.el = $('div#secret_input');
+      this.delegateEvents();
     }
-    SecretInputView.prototype.render = function() {
-      return this.delegateEvents();
-    };
     SecretInputView.prototype.next = function() {
-      return app.currentEntry.set({
+      alert('next trigger');
+      app.currentEntry.set({
         secret: $('#entry_secret').val()
       });
+      return app.currentView = new SelectGeoView();
     };
     return SecretInputView;
   })();
   SelectGeoView = (function() {
     __extends(SelectGeoView, Backbone.View);
+    SelectGeoView.prototype.events = {
+      "click a#manual_geolocate": "manual_geolocate",
+      "click a#use_current_location": "auto_geolocate"
+    };
     function SelectGeoView() {
       SelectGeoView.__super__.constructor.apply(this, arguments);
-      this.el = app.activePage();
+      this.el = $('div#select_geo');
+      this.delegateEvents();
     }
+    SelectGeoView.prototype.manual_geolocate = function() {
+      alert('clicked manual button');
+      return app.currentEntry.set({
+        use_browser_geolocation: false,
+        street: $('input#street').val(),
+        city: $('input#city').val(),
+        province: $('input#province').val()
+      });
+    };
+    SelectGeoView.prototype.auto_geolocate = function() {
+      alert('auto locate clicked');
+      return app.currentEntry.set({
+        use_browser_geolocation: true
+      });
+    };
     return SelectGeoView;
   })();
   $(document).ready(function() {
