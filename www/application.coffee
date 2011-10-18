@@ -20,10 +20,8 @@ class Geolocation extends Backbone.Model
         address = @get('street') + ', ' + @get('city') + ', ' + @get('province') + ', CA'
         url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=false'
         url = url.replace(/\s/g,"+");
-        # TODO: Need to implement JSONP pattern to allow for cross site requesting.
-        # Google should be a safe place with no XSS
-        $.getJSON url, (data) ->
-            alert(data)
+        $.getJSON url, (data) =>
+            @set({latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng})
 
 #
 # Inputing the MASAS secret
@@ -94,5 +92,8 @@ $(document).ready ->
   app.currentEntry = new Entry
   app.currentView = new SecretInputView()
   app.currentView.render()
+
+  #try
+  #  netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead")
   
 @app = app
