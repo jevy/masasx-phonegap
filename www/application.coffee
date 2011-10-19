@@ -7,6 +7,12 @@ app =
   activePage: ->
     $(".ui-page-active")
 
+  screenWidth: ->
+    $('body').innerWidth();
+
+  screenHeight: ->
+    $('body').innerHeight();
+
 # 
 # The model
 #
@@ -25,8 +31,6 @@ class Geolocation extends Backbone.Model
             dataType: 'json'
             success: (data) => @set({latitude: data.results[0].geometry.location.lat, longitude: data.results[0].geometry.location.lng})
             async: false
-            
-        alert("Latitude: " + @get('latitude') + " Longitude: " + @get('longitude'))
 
 #
 # Inputing the MASAS secret
@@ -88,7 +92,7 @@ class ConfirmGeoView extends Backbone.View
     $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
     $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
     app.currentView.mapView = new GoogleMapView({model: app.currentEntry.get('location')})
-    app.currentView.mapView.plot_on_map
+    app.currentView.mapView.render()
 
 #
 # Reusable map view
@@ -96,23 +100,25 @@ class ConfirmGeoView extends Backbone.View
 
 class GoogleMapView extends Backbone.View
     
-    @el = $('map_wrapper')
+    constructor: ->
+      super
+      @el = $('#map_wrapper')
 
-    plot_on_map: ->
-      $.mobile.pageLoading();
-      map_height = Math.ceil((screenHeight() > 640 ? 640 : screenHeight()) * 0.40);
-      map_width = Math.ceil((screenWidth() > 640 ? 640 : screenWidth()) * 0.90);
+    render: ->
+      map_height = 200 
+      map_width = 400
+      #map_height = Math.ceil((app.screenHeight() > 640 ? 640 : app.screenHeight()) * 0.40);
+      #map_width = Math.ceil((app.screenWidth() > 640 ? 640 : app.screenWidth()) * 0.90);
 
-      img_src = "http://maps.google.com/maps/api/staticmap?center=" + @model.get('latitude') + "," + @model.get('longitude') +
+      img_src = "http://maps.googleapis.com/maps/api/staticmap?center=" + @model.get('latitude') + "," + @model.get('longitude') +
         "&zoom=13&size=" + map_width + "x" + map_height + "&markers=color:blue%7C" + @model.get('latitude') + "," + @model.get('longitude') + "&markers=size:tiny&sensor=false"
 
       console.log(img_src)
 
-      $('.ui-page-active #map_wrapper').empty();
-      $('.ui-page-active #map_wrapper').prepend("<center><img id='map' src=" + img_src + "></center>");
-      $('#map_wrapper').width(map_width + 5);
-      $('#map_wrapper').height(map_height + 5);
-      $.mobile.pageLoading(true);
+      @el.empty();
+      @el.prepend("<img id='map' src=' + img_src + '>");
+      @el.width(map_width + 5);
+      @el.height(map_height + 5);
 
 #
 # Start the app

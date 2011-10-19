@@ -11,6 +11,12 @@
   app = {
     activePage: function() {
       return $(".ui-page-active");
+    },
+    screenWidth: function() {
+      return $('body').innerWidth();
+    },
+    screenHeight: function() {
+      return $('body').innerHeight();
     }
   };
   Entry = (function() {
@@ -30,7 +36,7 @@
       address = this.get('street') + ', ' + this.get('city') + ', ' + this.get('province') + ', CA';
       url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=false';
       url = url.replace(/\s/g, "+");
-      $.ajax({
+      return $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
@@ -42,7 +48,6 @@
         }, this),
         async: false
       });
-      return alert("Latitude: " + this.get('latitude') + " Longitude: " + this.get('longitude'));
     };
     return Geolocation;
   })();
@@ -106,7 +111,7 @@
       app.currentView.mapView = new GoogleMapView({
         model: app.currentEntry.get('location')
       });
-      return app.currentView.mapView.plot_on_map;
+      return app.currentView.mapView.render();
     };
     return ConfirmGeoView;
   })();
@@ -114,24 +119,18 @@
     __extends(GoogleMapView, Backbone.View);
     function GoogleMapView() {
       GoogleMapView.__super__.constructor.apply(this, arguments);
+      this.el = $('#map_wrapper');
     }
-    GoogleMapView.el = $('map_wrapper');
-    GoogleMapView.prototype.plot_on_map = function() {
-      var img_src, map_height, map_width, _ref, _ref2;
-      $.mobile.pageLoading();
-      map_height = Math.ceil(((_ref = screenHeight() > 640) != null ? _ref : {
-        640: screenHeight()
-      }) * 0.40);
-      map_width = Math.ceil(((_ref2 = screenWidth() > 640) != null ? _ref2 : {
-        640: screenWidth()
-      }) * 0.90);
-      img_src = "http://maps.google.com/maps/api/staticmap?center=" + this.model.get('latitude') + "," + this.model.get('longitude') + "&zoom=13&size=" + map_width + "x" + map_height + "&markers=color:blue%7C" + this.model.get('latitude') + "," + this.model.get('longitude') + "&markers=size:tiny&sensor=false";
+    GoogleMapView.prototype.render = function() {
+      var img_src, map_height, map_width;
+      map_height = 200;
+      map_width = 400;
+      img_src = "http://maps.googleapis.com/maps/api/staticmap?center=" + this.model.get('latitude') + "," + this.model.get('longitude') + "&zoom=13&size=" + map_width + "x" + map_height + "&markers=color:blue%7C" + this.model.get('latitude') + "," + this.model.get('longitude') + "&markers=size:tiny&sensor=false";
       console.log(img_src);
-      $('.ui-page-active #map_wrapper').empty();
-      $('.ui-page-active #map_wrapper').prepend("<center><img id='map' src=" + img_src + "></center>");
-      $('#map_wrapper').width(map_width + 5);
-      $('#map_wrapper').height(map_height + 5);
-      return $.mobile.pageLoading(true);
+      this.el.empty();
+      this.el.prepend("<img id='map' src=' + img_src + '>");
+      this.el.width(map_width + 5);
+      return this.el.height(map_height + 5);
     };
     return GoogleMapView;
   })();
