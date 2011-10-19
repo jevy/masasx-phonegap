@@ -25,18 +25,24 @@
     function Geolocation() {
       Geolocation.__super__.constructor.apply(this, arguments);
     }
-    Geolocation.prototype.initialize = function() {
+    Geolocation.prototype.geocode = function() {
       var address, url;
-      alert('doing geolocation');
       address = this.get('street') + ', ' + this.get('city') + ', ' + this.get('province') + ', CA';
       url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=false';
       url = url.replace(/\s/g, "+");
-      return $.getJSON(url, __bind(function(data) {
-        return this.set({
-          latitude: data.results[0].geometry.location.lat,
-          longitude: data.results[0].geometry.location.lng
-        });
-      }, this));
+      $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: __bind(function(data) {
+          return this.set({
+            latitude: data.results[0].geometry.location.lat,
+            longitude: data.results[0].geometry.location.lng
+          });
+        }, this),
+        async: false
+      });
+      return alert("Latitude: " + this.get('latitude') + " Longitude: " + this.get('longitude'));
     };
     return Geolocation;
   })();
@@ -54,7 +60,8 @@
       app.currentEntry.set({
         secret: $('#entry_secret').val()
       });
-      return app.currentView = new SelectGeoView();
+      app.currentView = new SelectGeoView();
+      return app.currentView.render();
     };
     return SecretInputView;
   })();
@@ -76,22 +83,14 @@
         city: $('input#city').val(),
         province: $('input#province').val()
       });
-      return app.currentEntry.set({
-        location_of_entry: location
+      location.geocode();
+      app.currentEntry.set({
+        location: location
       });
+      app.currentView = new ConfirmGeoView();
+      return app.currentView.render();
     };
-    SelectGeoView.prototype.auto_geolocate = function() {
-      var location;
-      return location = request_user_location();
-    };
-    SelectGeoView.prototype.request_user_location = function() {
-      return {
-        location: {
-          latitude: 45.8,
-          longitude: -78.3
-        }
-      };
-    };
+    SelectGeoView.prototype.auto_geolocate = function() {};
     return SelectGeoView;
   })();
   ConfirmGeoView = (function() {
@@ -101,7 +100,14 @@
       this.el = $('div#confirm_geo');
       this.delegateEvents();
     }
-    ConfirmGeoView.prototype.render = function() {};
+    ConfirmGeoView.prototype.render = function() {
+      $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
+      $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
+      app.currentView.mapView = new GoogleMapView({
+        model: app.currentEntry.get('location')
+      });
+      return app.currentView.mapView.plot_on_map;
+    };
     return ConfirmGeoView;
   })();
   GoogleMapView = (function() {
@@ -109,6 +115,24 @@
     function GoogleMapView() {
       GoogleMapView.__super__.constructor.apply(this, arguments);
     }
+    GoogleMapView.el = $('map_wrapper');
+    GoogleMapView.prototype.plot_on_map = function() {
+      var img_src, map_height, map_width, _ref, _ref2;
+      $.mobile.pageLoading();
+      map_height = Math.ceil(((_ref = screenHeight() > 640) != null ? _ref : {
+        640: screenHeight()
+      }) * 0.40);
+      map_width = Math.ceil(((_ref2 = screenWidth() > 640) != null ? _ref2 : {
+        640: screenWidth()
+      }) * 0.90);
+      img_src = "http://maps.google.com/maps/api/staticmap?center=" + this.model.get('latitude') + "," + this.model.get('longitude') + "&zoom=13&size=" + map_width + "x" + map_height + "&markers=color:blue%7C" + this.model.get('latitude') + "," + this.model.get('longitude') + "&markers=size:tiny&sensor=false";
+      console.log(img_src);
+      $('.ui-page-active #map_wrapper').empty();
+      $('.ui-page-active #map_wrapper').prepend("<center><img id='map' src=" + img_src + "></center>");
+      $('#map_wrapper').width(map_width + 5);
+      $('#map_wrapper').height(map_height + 5);
+      return $.mobile.pageLoading(true);
+    };
     return GoogleMapView;
   })();
   $(document).ready(function() {
