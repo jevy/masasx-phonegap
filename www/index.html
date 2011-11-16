@@ -9,6 +9,7 @@
 	<script type="text/javascript" charset="utf-8" src="jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="underscore-min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="backbone.js"></script>
+        <script type="text/javascript" src="backbone.localStorage-min.js"></script>
 
         <script type="text/javascript" charset="utf-8">
             document.write("<script type='text/javascript' charset='utf-8' src='jquery.mobile-1.0rc1.min.js?" + Math.random() + "'></" + "script>");
@@ -71,8 +72,24 @@
                 <label for="longitude">Longitude</label>
                 <input id="longitude" name="entry[longitude]" size="15" type="text" />
             </p> 
+            <p><a href="#detail_input" id='next' data-role="button">Next</a></p>
         </div>
     </div>
 
+    <div data-role='page' id='detail_input'>
+        <div data-role="header">
+            <h1>Entry Details</h1>
+        </div>
+        <div data-role="content">
+            <p>
+                <label for="status">Status</label>
+                <select id="status">
+                    <option value="Test">Test</option>
+                    <option value="Actual">Actual</option>
+                </select>
+            </p> 
+            <p><a href="#submit" id='submit' data-role="button">Submit</a></p>
+        </div>
+    </div>
   </body>
 </html>
