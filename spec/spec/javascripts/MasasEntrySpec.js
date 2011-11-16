@@ -58,6 +58,35 @@ describe("MasasEntry", function() {
       $xml = $( xmlDoc ),
       $title = $xml.find( "title" );
       expect($title.attr('type')).toEqual("xhtml");
+      expect($title.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml");
+      expect($title.find('div').find('div').attr('xml:lang')).toEqual("en");
+      expect($title.find('div').find('div').text()).toEqual("My Test Post");
+    });
+
+    it("has content", function() {
+      xmlDoc = $.parseXML( masas_entry.generate_entry_xml() ),
+      $xml = $( xmlDoc ),
+      $content = $xml.find( "content" );
+      expect($content.attr('type')).toEqual("xhtml");
+      expect($content.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml");
+      expect($content.find('div').find('div').attr('xml:lang')).toEqual("en");
+      expect($content.find('div').find('div').text()).toEqual("Description of the event");
+    });
+
+    it("has a point", function() {
+      xmlDoc = $.parseXML( masas_entry.generate_entry_xml() ),
+      $xml = $( xmlDoc ),
+      $point = $xml.find( "point" );
+      expect($point.attr('xmlns')).toEqual("http://www.georss.org/georss");
+      expect($point.text()).toEqual("45.8 -78.2");
+    });
+
+    it("expires", function() {
+      xmlDoc = $.parseXML( masas_entry.generate_entry_xml() ),
+      $xml = $( xmlDoc ),
+      $expires = $xml.find( "expires" );
+      expect($expires.attr('xmlns')).toEqual("http://purl.org/atompub/age/1.0");
+      expect($expires.text()).toEqual("2011-11-11 11:11:11");
     });
   });
 });
