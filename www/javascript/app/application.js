@@ -1,5 +1,5 @@
 (function() {
-  var ConfirmGeoView, DetailInputView, Entry, Geolocation, GoogleMapView, SecretInputView, SelectGeoView, app;
+  var app;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -9,28 +9,9 @@
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   app = {
-    activePage: function() {
-      return $(".ui-page-active");
-    },
-    screenWidth: function() {
-      return $('body').innerWidth();
-    },
-    screenHeight: function() {
-      return $('body').innerHeight();
-    }
+    currentEntry: null
   };
-  Entry = (function() {
-    __extends(Entry, Backbone.Model);
-    function Entry() {
-      Entry.__super__.constructor.apply(this, arguments);
-    }
-    Entry.prototype.postToMasas = function() {
-      alert("Wazzap MASAS");
-      return false;
-    };
-    return Entry;
-  })();
-  Geolocation = (function() {
+  window.Geolocation = (function() {
     __extends(Geolocation, Backbone.Model);
     function Geolocation() {
       Geolocation.__super__.constructor.apply(this, arguments);
@@ -55,7 +36,7 @@
     };
     return Geolocation;
   })();
-  SecretInputView = (function() {
+  window.SecretInputView = (function() {
     __extends(SecretInputView, Backbone.View);
     SecretInputView.prototype.events = {
       "click a#next": "next"
@@ -74,7 +55,7 @@
     };
     return SecretInputView;
   })();
-  SelectGeoView = (function() {
+  window.SelectGeoView = (function() {
     __extends(SelectGeoView, Backbone.View);
     SelectGeoView.prototype.events = {
       "click a#manual_geolocate": "manual_geolocate",
@@ -102,7 +83,7 @@
     SelectGeoView.prototype.auto_geolocate = function() {};
     return SelectGeoView;
   })();
-  ConfirmGeoView = (function() {
+  window.ConfirmGeoView = (function() {
     __extends(ConfirmGeoView, Backbone.View);
     ConfirmGeoView.prototype.events = {
       "click a#next": "next"
@@ -126,7 +107,7 @@
     };
     return ConfirmGeoView;
   })();
-  GoogleMapView = (function() {
+  window.GoogleMapView = (function() {
     __extends(GoogleMapView, Backbone.View);
     function GoogleMapView() {
       GoogleMapView.__super__.constructor.apply(this, arguments);
@@ -144,7 +125,7 @@
     };
     return GoogleMapView;
   })();
-  DetailInputView = (function() {
+  window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
     DetailInputView.prototype.events = {
       "click a#submit": "submit"

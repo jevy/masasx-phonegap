@@ -4,28 +4,21 @@
 #
 
 app =
-  activePage: ->
-    $(".ui-page-active")
-
-  screenWidth: ->
-    $('body').innerWidth();
-
-  screenHeight: ->
-    $('body').innerHeight();
+  currentEntry: null
+#  activePage: ->
+#    $(".ui-page-active")
+#
+#  screenWidth: ->
+#    $('body').innerWidth();
+#
+#  screenHeight: ->
+#    $('body').innerHeight();
 
 # 
 # The model
 #
 
-class Entry extends Backbone.Model
-    #localStorage: 
-    #    new Store("currentModel")
-
-    postToMasas: ->
-        alert "Wazzap MASAS"
-        false
-
-class Geolocation extends Backbone.Model
+class window.Geolocation extends Backbone.Model
 
     geocode: ->
         address = @get('street') + ', ' + @get('city') + ', ' + @get('province') + ', CA'
@@ -42,7 +35,7 @@ class Geolocation extends Backbone.Model
 # Inputing the MASAS secret
 #
 
-class SecretInputView extends Backbone.View
+class window.SecretInputView extends Backbone.View
 
   events:
     "click a#next"  : "next"
@@ -61,7 +54,7 @@ class SecretInputView extends Backbone.View
 # Selecting how to input the location
 #
 
-class SelectGeoView extends Backbone.View
+class window.SelectGeoView extends Backbone.View
 
   events:
     "click a#manual_geolocate"      : "manual_geolocate"
@@ -88,7 +81,7 @@ class SelectGeoView extends Backbone.View
 # Making sure they entered the right location
 #
 
-class ConfirmGeoView extends Backbone.View
+class window.ConfirmGeoView extends Backbone.View
 
   events:
     "click a#next"  : "next"
@@ -112,7 +105,7 @@ class ConfirmGeoView extends Backbone.View
 # Reusable map view
 #
 
-class GoogleMapView extends Backbone.View
+class window.GoogleMapView extends Backbone.View
     
     constructor: ->
       super
@@ -132,7 +125,7 @@ class GoogleMapView extends Backbone.View
       @el.width(map_width + 5);
       @el.height(map_height + 5);
 
-class DetailInputView extends Backbone.View
+class window.DetailInputView extends Backbone.View
 
   events:
     "click a#submit" : "submit"
