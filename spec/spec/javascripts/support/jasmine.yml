@@ -17,6 +17,7 @@ src_files:
     - vendor/backbone.localStorage-min.js
     - app/MasasEntry.js
     - app/Entry.js
+    - app/Geolocation.js
     #- app/application.js
 
 # stylesheets
