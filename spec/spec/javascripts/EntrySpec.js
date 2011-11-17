@@ -1,8 +1,11 @@
 (function() {
   describe("Entry", function() {
-    it("can be created", function() {
+    it("can have values set on create", function() {
       var entry;
-      return entry = new window.Entry();
+      entry = new window.Entry({
+        status: 'Something'
+      });
+      return expect(entry.get('status')).toEqual('Something');
     });
     return describe(".generate_entry_xml", function() {
       var $xml, masas_entry;
@@ -10,7 +13,17 @@
       $xml = null;
       beforeEach(function() {
         var xmlDoc;
-        masas_entry = new window.Entry();
+        masas_entry = new window.Entry({
+          status: 'Test',
+          severity: 'Extreme',
+          certainty: 'Possibly',
+          category: 'Other',
+          icon: 'incident/roadway',
+          title: 'Some Test Post',
+          description: 'My description',
+          geocoding: '45.8 -78.3',
+          expires: '2011-11-11 11:11:12'
+        });
         xmlDoc = $.parseXML(masas_entry.generate_entry_xml());
         return $xml = $(xmlDoc);
       });
@@ -28,13 +41,13 @@
       it("has a severity category", function() {
         var $category;
         $category = $xml.find("category[label='Severity']");
-        expect($category.attr('term')).toEqual("Minor");
+        expect($category.attr('term')).toEqual("Extreme");
         return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/severity");
       });
       it("has a certainty category", function() {
         var $category;
         $category = $xml.find("category[label='Certainty']");
-        expect($category.attr('term')).toEqual("Observed");
+        expect($category.attr('term')).toEqual("Possibly");
         return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/certainty");
       });
       it("has a 'category' category", function() {
@@ -55,7 +68,7 @@
         expect($title.attr('type')).toEqual("xhtml");
         expect($title.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml");
         expect($title.find('div').find('div').attr('xml:lang')).toEqual("en");
-        return expect($title.find('div').find('div').text()).toEqual("My Test Post");
+        return expect($title.find('div').find('div').text()).toEqual("Some Test Post");
       });
       it("has content", function() {
         var $content;
@@ -63,19 +76,19 @@
         expect($content.attr('type')).toEqual("xhtml");
         expect($content.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml");
         expect($content.find('div').find('div').attr('xml:lang')).toEqual("en");
-        return expect($content.find('div').find('div').text()).toEqual("Description of the event");
+        return expect($content.find('div').find('div').text()).toEqual("My description");
       });
       it("has a point", function() {
         var $point;
         $point = $xml.find("point");
         expect($point.attr('xmlns')).toEqual("http://www.georss.org/georss");
-        return expect($point.text()).toEqual("45.8 -78.2");
+        return expect($point.text()).toEqual("45.8 -78.3");
       });
       return it("expires", function() {
         var $expires;
         $expires = $xml.find("expires");
         expect($expires.attr('xmlns')).toEqual("http://purl.org/atompub/age/1.0");
-        return expect($expires.text()).toEqual("2011-11-11 11:11:11");
+        return expect($expires.text()).toEqual("2011-11-11 11:11:12");
       });
     });
   });

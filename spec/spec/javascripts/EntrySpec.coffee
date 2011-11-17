@@ -1,13 +1,23 @@
 describe "Entry", ->
-    it "can be created", ->
-        entry = new window.Entry()
+    it "can have values set on create", ->
+        entry = new window.Entry({status: 'Something'})
+        expect(entry.get('status')).toEqual('Something')
 
     describe ".generate_entry_xml", ->
         masas_entry = null
         $xml = null
 
         beforeEach ->
-            masas_entry = new window.Entry()
+            masas_entry = new window.Entry({
+                                            status: 'Test', 
+                                            severity: 'Extreme', 
+                                            certainty: 'Possibly',
+                                            category: 'Other',
+                                            icon: 'incident/roadway'
+                                            title: 'Some Test Post',
+                                            description: 'My description'
+                                            geocoding: '45.8 -78.3',
+                                            expires: '2011-11-11 11:11:12'})
             xmlDoc = $.parseXML( masas_entry.generate_entry_xml() )
             $xml = $( xmlDoc )
 
@@ -22,12 +32,12 @@ describe "Entry", ->
 
         it "has a severity category", ->
             $category = $xml.find( "category[label='Severity']" )
-            expect($category.attr('term')).toEqual("Minor")
+            expect($category.attr('term')).toEqual("Extreme")
             expect($category.attr('scheme')).toEqual("http://masas.ca/categories/severity")
 
         it "has a certainty category", ->
             $category = $xml.find( "category[label='Certainty']" )
-            expect($category.attr('term')).toEqual("Observed")
+            expect($category.attr('term')).toEqual("Possibly")
             expect($category.attr('scheme')).toEqual("http://masas.ca/categories/certainty")
         
         it "has a 'category' category", ->
@@ -45,21 +55,21 @@ describe "Entry", ->
             expect($title.attr('type')).toEqual("xhtml")
             expect($title.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml")
             expect($title.find('div').find('div').attr('xml:lang')).toEqual("en")
-            expect($title.find('div').find('div').text()).toEqual("My Test Post")
+            expect($title.find('div').find('div').text()).toEqual("Some Test Post")
 
         it "has content", ->
             $content = $xml.find( "content" )
             expect($content.attr('type')).toEqual("xhtml")
             expect($content.find('div').attr('xmlns')).toEqual("http://www.w3.org/1999/xhtml")
             expect($content.find('div').find('div').attr('xml:lang')).toEqual("en")
-            expect($content.find('div').find('div').text()).toEqual("Description of the event")
+            expect($content.find('div').find('div').text()).toEqual("My description")
 
         it "has a point", ->
             $point = $xml.find( "point" )
             expect($point.attr('xmlns')).toEqual("http://www.georss.org/georss")
-            expect($point.text()).toEqual("45.8 -78.2")
+            expect($point.text()).toEqual("45.8 -78.3")
 
         it "expires", ->
             $expires = $xml.find( "expires" )
             expect($expires.attr('xmlns')).toEqual("http://purl.org/atompub/age/1.0")
-            expect($expires.text()).toEqual("2011-11-11 11:11:11")
+            expect($expires.text()).toEqual("2011-11-11 11:11:12")
