@@ -72,4 +72,15 @@ describe("MasasEntry", function() {
       expect($expires.text()).toEqual("2011-11-11 11:11:11");
     });
   });
+
+  //describe(".post", function() {
+  //  it("sends the server xml data", function() {
+  //    stub(XMLHttpRequest.prototype);
+  //    mock(XMLHttpRequest.prototype).expects("send").withArgs(null);
+  //    var masas_entry = new MasasEntry();
+  //    masas_entry.post();
+
+  //    jQuery.ajax.verify();
+  //  });
+  //});
 });
