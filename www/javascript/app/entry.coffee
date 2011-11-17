@@ -16,6 +16,6 @@ class window.Entry extends Backbone.Model
             "<category label=\"Icon\" scheme=\"http://masas.ca/categories/icon\" term=\"#{this.get('icon')}\" />" +
             "<title type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('title')}</div></div></title>" +
             "<content type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('description')}</div></div></content>" +
-            "<point xmlns=\"http://www.georss.org/georss\">#{this.get('location').get('longitude')} #{this.get('location').get('latitude')}</point>" +
+            "<point xmlns=\"http://www.georss.org/georss\">#{this.get('location').get('latitude')} #{this.get('location').get('longitude')}</point>" +
             "<expires xmlns=\"http://purl.org/atompub/age/1.0\">#{this.get('expires')}</expires>" +
             "</entry>"

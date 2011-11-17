@@ -111,6 +111,14 @@
     }
     DetailInputView.prototype.render = function() {};
     DetailInputView.prototype.submit = function() {
+      app.currentEntry.set({
+        status: 'Text',
+        severity: 'Extreme',
+        certainty: 'Other',
+        icon: 'incident/roadway',
+        title: 'Some Test Post',
+        description: 'My Description'
+      });
       return app.currentEntry.postToMasas;
     };
     return DetailInputView;

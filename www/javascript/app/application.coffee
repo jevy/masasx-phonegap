@@ -124,6 +124,7 @@ class window.DetailInputView extends Backbone.View
   render: ->
     
   submit: ->
+    app.currentEntry.set({status: 'Text', severity: 'Extreme', certainty: 'Other', icon: 'incident/roadway', title: 'Some Test Post', description: 'My Description'})
     app.currentEntry.postToMasas
 
 #

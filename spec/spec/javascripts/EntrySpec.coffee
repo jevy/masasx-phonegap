@@ -16,7 +16,7 @@ describe "Entry", ->
                                             icon: 'incident/roadway'
                                             title: 'Some Test Post',
                                             description: 'My description'
-                                            location: new window.Geolocation({latitude: -78.3, longitude: 45.8}),
+                                            location: new window.Geolocation({longitude: -78.3, latitude: 45.8}),
                                             expires: '2011-11-11 11:11:12'})
             xmlDoc = $.parseXML( masas_entry.generate_entry_xml() )
             $xml = $( xmlDoc )
