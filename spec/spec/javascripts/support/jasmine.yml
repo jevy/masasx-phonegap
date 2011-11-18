@@ -16,6 +16,7 @@ src_files:
     - vendor/backbone-min.js
     - vendor/backbone.localStorage-min.js
     - app/Entry.js
+    - app/status.js
     - app/Geolocation.js
     #- app/application.js
 
