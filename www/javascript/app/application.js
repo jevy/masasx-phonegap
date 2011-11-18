@@ -109,16 +109,24 @@
       DetailInputView.__super__.constructor.apply(this, arguments);
       this.el = $('div#detail_input');
     }
-    DetailInputView.prototype.render = function() {};
-    DetailInputView.prototype.submit = function() {
-      app.currentEntry.set({
-        status: 'Text',
-        severity: 'Extreme',
-        certainty: 'Other',
-        icon: 'incident/roadway',
-        title: 'Some Test Post',
-        description: 'My Description'
+    DetailInputView.prototype.render = function() {
+      var statuses, statusesView;
+      statuses = new window.Statuses([
+        new Status({
+          id: 4,
+          name: 'Test'
+        }), new Status({
+          id: 1,
+          name: 'Actual'
+        })
+      ]);
+      statusesView = new StatusesView({
+        el: $("select#status"),
+        collection: statuses
       });
+      return statusesView.addAll();
+    };
+    DetailInputView.prototype.submit = function() {
       return app.currentEntry.postToMasas;
     };
     return DetailInputView;

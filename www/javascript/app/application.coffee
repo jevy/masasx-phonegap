@@ -122,9 +122,12 @@ class window.DetailInputView extends Backbone.View
     @el = $('div#detail_input')
 
   render: ->
+    statuses = new window.Statuses([new Status({id: 4, name: 'Test'}), new Status({id: 1, name: 'Actual'})])
+    statusesView = new StatusesView({el: $("select#status"), collection: statuses})
+    statusesView.addAll()
     
   submit: ->
-    app.currentEntry.set({status: 'Text', severity: 'Extreme', certainty: 'Other', icon: 'incident/roadway', title: 'Some Test Post', description: 'My Description'})
+    #app.currentEntry.set({status: 'Text', severity: 'Extreme', certainty: 'Other', icon: 'incident/roadway', title: 'Some Test Post', description: 'My Description'})
     app.currentEntry.postToMasas
 
 #
