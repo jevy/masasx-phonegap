@@ -1,16 +1,12 @@
 class window.Entry extends Backbone.Model
     autoGeolocate: ->
-        console.log "Calling autogeocoder"
         navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {timeout:10000})
 
     autoLocateSuccess: (position) =>
-        console.log "Geocoding Success"
-        #$.mobile.hidePageLoadingMsg()
         this.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
 
     autoLocateError: (error) ->
-        console.log "#{error.message}"
-        #$.mobile.hidePageLoadingMsg()
+        alert "#{error.message}"
 
     postToMasas: ->
         $.ajax({

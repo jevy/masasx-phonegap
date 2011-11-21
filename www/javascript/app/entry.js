@@ -14,13 +14,11 @@
       Entry.__super__.constructor.apply(this, arguments);
     }
     Entry.prototype.autoGeolocate = function() {
-      console.log("Calling autogeocoder");
       return navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {
         timeout: 10000
       });
     };
     Entry.prototype.autoLocateSuccess = function(position) {
-      console.log("Geocoding Success");
       return this.set({
         location: new Geolocation({
           latitude: position.coords.latitude,
@@ -29,7 +27,7 @@
       });
     };
     Entry.prototype.autoLocateError = function(error) {
-      return console.log("" + error.message);
+      return alert("" + error.message);
     };
     Entry.prototype.postToMasas = function() {
       return $.ajax({
