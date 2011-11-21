@@ -1,5 +1,5 @@
 (function() {
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;
@@ -10,8 +10,27 @@
   window.Entry = (function() {
     __extends(Entry, Backbone.Model);
     function Entry() {
+      this.autoLocateSuccess = __bind(this.autoLocateSuccess, this);
       Entry.__super__.constructor.apply(this, arguments);
     }
+    Entry.prototype.autoGeolocate = function() {
+      console.log("Calling autogeocoder");
+      return navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {
+        timeout: 10000
+      });
+    };
+    Entry.prototype.autoLocateSuccess = function(position) {
+      console.log("Geocoding Success");
+      return this.set({
+        location: new Geolocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        })
+      });
+    };
+    Entry.prototype.autoLocateError = function(error) {
+      return console.log("" + error.message);
+    };
     Entry.prototype.postToMasas = function() {
       return $.ajax({
         type: 'POST',

@@ -7,7 +7,7 @@
     child.prototype = new ctor;
     child.__super__ = parent.prototype;
     return child;
-  };
+  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   app = {
     currentEntry: null
   };
@@ -56,20 +56,9 @@
       return app.currentView.render();
     };
     SelectGeoView.prototype.auto_geolocate = function() {
-      return navigator.geolocation.getCurrentPosition(app.currentView.auto_geolocate_success, app.currentView.auto_geolocate_error, {
-        timeout: 5000
-      });
-    };
-    SelectGeoView.prototype.auto_geolocate_success = function(position) {
-      return app.currentEntry.set({
-        location: new Geolocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        })
-      });
-    };
-    SelectGeoView.prototype.auto_geolocate_error = function(error) {
-      return alert("" + error.message);
+      app.currentEntry.autoGeolocate();
+      app.currentView = new ConfirmGeoView();
+      return app.currentView.render();
     };
     return SelectGeoView;
   })();
@@ -81,15 +70,20 @@
     function ConfirmGeoView() {
       ConfirmGeoView.__super__.constructor.apply(this, arguments);
       this.el = $('div#confirm_geo');
+      app.currentEntry.bind('change', __bind(function() {
+        return this.render();
+      }, this));
       this.delegateEvents();
     }
     ConfirmGeoView.prototype.render = function() {
-      $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
-      $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
-      app.currentView.mapView = new GoogleMapView({
-        model: app.currentEntry.get('location')
-      });
-      return app.currentView.mapView.render();
+      if (app.currentEntry.get('location')) {
+        $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
+        $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
+        app.currentView.mapView = new GoogleMapView({
+          model: app.currentEntry.get('location')
+        });
+        return app.currentView.mapView.render();
+      }
     };
     ConfirmGeoView.prototype.next = function() {
       app.currentView = new DetailInputView();

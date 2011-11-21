@@ -60,15 +60,9 @@ class window.SelectGeoView extends Backbone.View
     app.currentView.render()
     
   auto_geolocate: ->
-    navigator.geolocation.getCurrentPosition(app.currentView.auto_geolocate_success, app.currentView.auto_geolocate_error,{timeout:5000})
-
-  auto_geolocate_success: (position) ->
-    app.currentEntry.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
-    #app.currentView = new ConfirmGeoView()
-    #app.currentView.render()
-
-  auto_geolocate_error: (error) ->
-    alert "#{error.message}"
+    app.currentEntry.autoGeolocate()
+    app.currentView = new ConfirmGeoView()
+    app.currentView.render()
 
 #
 # Making sure they entered the right location
@@ -82,13 +76,15 @@ class window.ConfirmGeoView extends Backbone.View
   constructor: ->
     super
     @el = $('div#confirm_geo')
+    app.currentEntry.bind('change', => this.render())
     @delegateEvents()
 
   render: ->
-    $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
-    $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
-    app.currentView.mapView = new GoogleMapView({model: app.currentEntry.get('location')})
-    app.currentView.mapView.render()
+    if app.currentEntry.get('location') 
+        $('input#latitude').val(app.currentEntry.get('location').get('latitude'));
+        $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
+        app.currentView.mapView = new GoogleMapView({model: app.currentEntry.get('location')})
+        app.currentView.mapView.render()
 
   next: ->
     app.currentView = new DetailInputView()
