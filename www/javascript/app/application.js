@@ -55,7 +55,22 @@
       app.currentView = new ConfirmGeoView();
       return app.currentView.render();
     };
-    SelectGeoView.prototype.auto_geolocate = function() {};
+    SelectGeoView.prototype.auto_geolocate = function() {
+      return navigator.geolocation.getCurrentPosition(app.currentView.auto_geolocate_success, app.currentView.auto_geolocate_error, {
+        timeout: 5000
+      });
+    };
+    SelectGeoView.prototype.auto_geolocate_success = function(position) {
+      return app.currentEntry.set({
+        location: new Geolocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        })
+      });
+    };
+    SelectGeoView.prototype.auto_geolocate_error = function(error) {
+      return alert("" + error.message);
+    };
     return SelectGeoView;
   })();
   window.ConfirmGeoView = (function() {
@@ -103,20 +118,21 @@
   window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
     DetailInputView.prototype.events = {
-      "click a#submit": "submit"
+      "click a#send_to_masas": "next"
     };
     function DetailInputView() {
       DetailInputView.__super__.constructor.apply(this, arguments);
       this.el = $('div#detail_input');
+      this.delegateEvents();
     }
     DetailInputView.prototype.render = function() {
-      var statuses, statusesView;
+      var categories, categoriesView, certainties, certaintiesView, severities, severitiesView, statuses, statusesView;
       statuses = new window.Statuses([
         new Status({
-          id: 4,
+          id: 1,
           name: 'Test'
         }), new Status({
-          id: 1,
+          id: 2,
           name: 'Actual'
         })
       ]);
@@ -124,10 +140,71 @@
         el: $("select#status"),
         collection: statuses
       });
-      return statusesView.addAll();
+      statusesView.addAll();
+      categories = new window.Categories([
+        new Category({
+          id: 1,
+          name: 'Flood'
+        }), new Category({
+          id: 2,
+          name: 'Roadway'
+        }), new Category({
+          id: 3,
+          name: 'Flood'
+        })
+      ]);
+      categoriesView = new CategoriesView({
+        el: $("select#category"),
+        collection: categories
+      });
+      categoriesView.addAll();
+      severities = new window.Severities([
+        new Severity({
+          id: 1,
+          name: 'Extreme'
+        }), new Severity({
+          id: 2,
+          name: 'Moderate'
+        }), new Severity({
+          id: 3,
+          name: 'Unknown'
+        })
+      ]);
+      severitiesView = new SeveritiesView({
+        el: $("select#severity"),
+        collection: severities
+      });
+      severitiesView.addAll();
+      certainties = new window.Certainties([
+        new Certainty({
+          id: 1,
+          name: 'Likely'
+        }), new Certainty({
+          id: 2,
+          name: 'Observed'
+        }), new Certainty({
+          id: 3,
+          name: 'Possible'
+        })
+      ]);
+      certaintiesView = new CertaintiesView({
+        el: $("select#certainty"),
+        collection: certainties
+      });
+      return certaintiesView.addAll();
     };
-    DetailInputView.prototype.submit = function() {
-      return app.currentEntry.postToMasas;
+    DetailInputView.prototype.next = function() {
+      app.currentEntry.set({
+        status: $("select#status option:selected").text(),
+        category: $("select#category option:selected").text(),
+        severity: $("select#severity option:selected").text(),
+        certainty: $("select#certainty option:selected").text(),
+        icon: 'incident/roadway',
+        title: 'Some Test Post',
+        description: 'My Description',
+        expires: '2011-12-19T04:00:00Z'
+      });
+      return app.currentEntry.postToMasas();
     };
     return DetailInputView;
   })();

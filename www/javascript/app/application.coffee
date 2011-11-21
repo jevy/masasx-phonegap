@@ -60,9 +60,15 @@ class window.SelectGeoView extends Backbone.View
     app.currentView.render()
     
   auto_geolocate: ->
-    #location = request_user_location();
-    #app.currentEntry.set({location_of_entry: new Geolocation({latitude: location.latitude, longitude: location.longitude})}) # Do geocode
+    navigator.geolocation.getCurrentPosition(app.currentView.auto_geolocate_success, app.currentView.auto_geolocate_error,{timeout:5000})
+
+  auto_geolocate_success: (position) ->
+    app.currentEntry.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
     #app.currentView = new ConfirmGeoView()
+    #app.currentView.render()
+
+  auto_geolocate_error: (error) ->
+    alert "#{error.message}"
 
 #
 # Making sure they entered the right location
@@ -115,27 +121,46 @@ class window.GoogleMapView extends Backbone.View
 class window.DetailInputView extends Backbone.View
 
   events:
-    "click a#submit" : "submit"
+    "click a#send_to_masas" : "next"
 
   constructor: ->
     super
     @el = $('div#detail_input')
+    @delegateEvents()
 
   render: ->
-    statuses = new window.Statuses([new Status({id: 4, name: 'Test'}), new Status({id: 1, name: 'Actual'})])
+    statuses = new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
     statusesView = new StatusesView({el: $("select#status"), collection: statuses})
     statusesView.addAll()
+    categories = new window.Categories([new Category({id: 1, name: 'Flood'}), new Category({id: 2, name: 'Roadway'}), new Category({id: 3, name: 'Flood'})])
+    categoriesView = new CategoriesView({el: $("select#category"), collection: categories})
+    categoriesView.addAll()
+    severities = new window.Severities([new Severity({id: 1, name: 'Extreme'}), new Severity({id: 2, name: 'Moderate'}), new Severity({id: 3, name: 'Unknown'})])
+    severitiesView = new SeveritiesView({el: $("select#severity"), collection: severities})
+    severitiesView.addAll()
+    certainties = new window.Certainties([new Certainty({id: 1, name: 'Likely'}), new Certainty({id: 2, name: 'Observed'}), new Certainty({id: 3, name: 'Possible'})])
+    certaintiesView = new CertaintiesView({el: $("select#certainty"), collection: certainties})
+    certaintiesView.addAll()
     
-  submit: ->
-    #app.currentEntry.set({status: 'Text', severity: 'Extreme', certainty: 'Other', icon: 'incident/roadway', title: 'Some Test Post', description: 'My Description'})
-    app.currentEntry.postToMasas
+  next: ->
+    app.currentEntry.set({
+                          status: $("select#status option:selected").text(), 
+                          category: $("select#category option:selected").text(), 
+                          severity: $("select#severity option:selected").text(),  
+                          certainty: $("select#certainty option:selected").text(), 
+                          icon: 'incident/roadway', 
+                          title: 'Some Test Post', 
+                          description: 'My Description',
+                          expires: '2011-12-19T04:00:00Z'
+                        })
+    app.currentEntry.postToMasas()
 
 #
 # Start the app
 #  
 
 $(document).ready ->
-  app.currentEntry = new Entry({ id: 1})
+  app.currentEntry = new Entry({id: 1})
   app.currentView = new SecretInputView()
   app.currentView.render()
 
