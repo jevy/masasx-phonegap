@@ -5,8 +5,9 @@ class window.Entry extends Backbone.Model
     autoLocateSuccess: (position) =>
         this.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
 
-    autoLocateError: (error) ->
-        alert "#{error.message}"
+    autoLocateError: (error) =>
+        this.unset(location)
+        alert "Code: #{error.code}\n Message: #{error.message}\n"
 
     postToMasas: ->
         $.ajax({

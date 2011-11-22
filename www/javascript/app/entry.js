@@ -10,6 +10,7 @@
   window.Entry = (function() {
     __extends(Entry, Backbone.Model);
     function Entry() {
+      this.autoLocateError = __bind(this.autoLocateError, this);
       this.autoLocateSuccess = __bind(this.autoLocateSuccess, this);
       Entry.__super__.constructor.apply(this, arguments);
     }
@@ -27,7 +28,8 @@
       });
     };
     Entry.prototype.autoLocateError = function(error) {
-      return alert("" + error.message);
+      this.unset(location);
+      return alert("Code: " + error.code + "\n Message: " + error.message + "\n");
     };
     Entry.prototype.postToMasas = function() {
       return $.ajax({
