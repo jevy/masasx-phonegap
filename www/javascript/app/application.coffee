@@ -145,8 +145,8 @@ class window.DetailInputView extends Backbone.View
                           severity: $("select#severity option:selected").text(),  
                           certainty: $("select#certainty option:selected").text(), 
                           icon: 'incident/roadway', 
-                          title: 'Some Test Post', 
-                          description: 'My Description',
+                          title: $('input#title').val(), 
+                          description: $('textarea#entry_content').val(),
                           expires: '2011-12-19T04:00:00Z'
                         })
     app.currentEntry.postToMasas()
