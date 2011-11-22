@@ -15,11 +15,13 @@
       Entry.__super__.constructor.apply(this, arguments);
     }
     Entry.prototype.autoGeolocate = function() {
+      alert("Doing geolocation");
       return navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {
         timeout: 10000
       });
     };
     Entry.prototype.autoLocateSuccess = function(position) {
+      alert("Lat: " + position.coords.latitude + "\n Long: " + position.coords.longitude + "\n");
       return this.set({
         location: new Geolocation({
           latitude: position.coords.latitude,
@@ -28,8 +30,8 @@
       });
     };
     Entry.prototype.autoLocateError = function(error) {
-      this.unset(location);
-      return alert("Code: " + error.code + "\n Message: " + error.message + "\n");
+      alert("Code: " + error.code + "\n Message: " + error.message + "\n");
+      return this.unset(location);
     };
     Entry.prototype.postToMasas = function() {
       return $.ajax({
