@@ -15,9 +15,7 @@ src_files:
     - vendor/underscore-min.js
     - vendor/backbone-min.js
     - vendor/backbone.localStorage-min.js
-    - app/Entry.js
-    - app/status.js
-    - app/Geolocation.js
+    - app/*.js
     #- app/application.js
 
 # stylesheets

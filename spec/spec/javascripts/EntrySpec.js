@@ -14,11 +14,23 @@
       beforeEach(function() {
         var xmlDoc;
         masas_entry = new window.Entry({
-          status: 'Test',
-          severity: 'Extreme',
-          certainty: 'Possibly',
-          category: 'Other',
-          icon: 'incident/roadway',
+          status: new Status({
+            name: 'Test'
+          }),
+          severity: new Severity({
+            name: 'Extreme'
+          }),
+          certainty: new Certainty({
+            name: 'Possibly'
+          }),
+          category: new Category({
+            name: 'Roadway',
+            event_code: 'Transport'
+          }),
+          subcategory: new SubCategory({
+            name: 'Hazardous Code',
+            event_code: 'rdCondition'
+          }),
           title: 'Some Test Post',
           description: 'My description',
           location: new window.Geolocation({
@@ -56,13 +68,13 @@
       it("has a 'category' category", function() {
         var $category;
         $category = $xml.find("category[label='Category']");
-        expect($category.attr('term')).toEqual("Other");
+        expect($category.attr('term')).toEqual("Transport");
         return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/category");
       });
       it("has an icon", function() {
         var $category;
         $category = $xml.find("category[label='Icon']");
-        expect($category.attr('term')).toEqual("incident/roadway");
+        expect($category.attr('term')).toEqual("rdCondition");
         return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/icon");
       });
       it("has a title", function() {

@@ -121,8 +121,8 @@
       this.delegateEvents();
     }
     DetailInputView.prototype.render = function() {
-      var categories, categoriesView, certainties, certaintiesView, severities, severitiesView, statuses, statusesView;
-      statuses = new window.Statuses([
+      var categoriesView, certaintiesView, severitiesView, statusesView;
+      this.statuses = new window.Statuses([
         new Status({
           id: 1,
           name: 'Test'
@@ -133,59 +133,70 @@
       ]);
       statusesView = new StatusesView({
         el: $("select#status"),
-        collection: statuses
+        collection: this.statuses
       });
       statusesView.addAll();
-      categories = new window.Categories([
+      this.categories = new window.Categories([
         new Category({
           id: 1,
-          name: 'Flood'
+          name: 'Flood',
+          event_code: 'Met'
         }), new Category({
           id: 2,
-          name: 'Roadway'
+          name: 'Roadway',
+          event_code: 'Transport'
         }), new Category({
           id: 3,
-          name: 'Fire'
+          name: 'Fire',
+          event_code: 'Fire'
         })
       ]);
       categoriesView = new CategoriesView({
         el: $("select#category"),
-        collection: categories
+        collection: this.categories
       });
       categoriesView.addAll();
       this.subCategories = new window.SubCategories([
         new SubCategory({
           id: 1,
           name: 'Bridge Closure',
-          category_id: 2
+          category_id: 2,
+          event_code: 'bridgeClose'
         }), new SubCategory({
           id: 2,
           name: 'Road Closure',
-          category_id: 2
+          category_id: 2,
+          event_code: 'roadClose'
         }), new SubCategory({
           id: 3,
           name: 'Road Delay',
-          category_id: 2
+          category_id: 2,
+          event_code: 'roadDelay'
         }), new SubCategory({
           id: 4,
           name: 'High Water Level',
-          category_id: 1
+          category_id: 1,
+          event_code: 'highWater'
         }), new SubCategory({
           id: 5,
           name: 'Overland Flow Flood',
-          category_id: 1
+          category_id: 1,
+          event_code: 'overflood'
         }), new SubCategory({
           id: 6,
           name: 'Wildfire',
-          category_id: 3
+          category_id: 3,
+          event_code: 'wildFire'
         }), new SubCategory({
           id: 7,
           name: 'Urban Fire',
-          category_id: 3
+          category_id: 3,
+          event_code: 'urbanFire'
         }), new SubCategory({
           id: 8,
-          name: 'Road Delay',
-          category_id: 3
+          name: 'Forest Fire',
+          category_id: 3,
+          event_code: 'forestFire'
         })
       ]);
       this.subCategoriesView = new SubCategoriesView({
@@ -193,7 +204,7 @@
         collection: this.subCategories
       });
       this.subCategoriesView.addAll();
-      severities = new window.Severities([
+      this.severities = new window.Severities([
         new Severity({
           id: 1,
           name: 'Extreme'
@@ -207,10 +218,10 @@
       ]);
       severitiesView = new SeveritiesView({
         el: $("select#severity"),
-        collection: severities
+        collection: this.severities
       });
       severitiesView.addAll();
-      certainties = new window.Certainties([
+      this.certainties = new window.Certainties([
         new Certainty({
           id: 1,
           name: 'Likely'
@@ -224,7 +235,7 @@
       ]);
       certaintiesView = new CertaintiesView({
         el: $("select#certainty"),
-        collection: certainties
+        collection: this.certainties
       });
       return certaintiesView.addAll();
     };
@@ -243,11 +254,11 @@
     };
     DetailInputView.prototype.next = function() {
       app.currentEntry.set({
-        status: $("select#status option:selected").text(),
-        category: $("select#category option:selected").text(),
-        severity: $("select#severity option:selected").text(),
-        certainty: $("select#certainty option:selected").text(),
-        icon: 'incident/roadway',
+        status: this.statuses.get(parseInt($("select#status option:selected").val())),
+        category: this.categories.get(parseInt($("select#category option:selected").val())),
+        subcategory: this.subCategories.get(parseInt($("select#subcategory option:selected").val())),
+        severity: this.severities.get(parseInt($("select#severity option:selected").val())),
+        certainty: this.certainties.get(parseInt($("select#certainty option:selected").val())),
         title: $('input#title').val(),
         description: $('textarea#entry_content').val(),
         expires: '2011-12-19T04:00:00Z'
