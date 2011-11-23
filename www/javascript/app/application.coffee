@@ -149,7 +149,7 @@ class window.DetailInputView extends Backbone.View
   populateSubCategories: ->
     @subCategoriesView.el.find('option').remove()
     subCategoriesForCategory = app.subCategories.for_category( app.categories.get(parseInt($("select#category option:selected").val())) )
-    @subCategoriesView = new SubCategoriesView({el: $("select#subcategory"), collection: new window.SubCategories(subCategoriesForCategory)})
+    @subCategoriesView = new LocationsView({el: $("select#subcategory"), collection: new window.SubCategories(subCategoriesForCategory)})
     @subCategoriesView.addAll()
     @subCategoriesView.el.selectmenu("refresh")
     
