@@ -1,4 +1,12 @@
 class window.Entry extends Backbone.Model
+
+    #defaults:
+    #    "status" : app.statuses.first()
+    #    "category" : app.categories.first()
+    #    "subcategory" : app.subcategory.for_category(app.categories.first())
+    #    "severity" : app.severities.first()
+    #    "certainty" : app.certainties.first()
+
     autoGeolocate: ->
         navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {timeout:10000})
 

@@ -9,7 +9,98 @@
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   app = {
-    currentEntry: null
+    currentEntry: null,
+    statuses: new window.Statuses([
+      new Status({
+        id: 1,
+        name: 'Test'
+      }), new Status({
+        id: 2,
+        name: 'Actual'
+      })
+    ]),
+    categories: new window.Categories([
+      new Category({
+        id: 1,
+        name: 'Flood',
+        event_code: 'Met'
+      }), new Category({
+        id: 2,
+        name: 'Roadway',
+        event_code: 'Transport'
+      }), new Category({
+        id: 3,
+        name: 'Fire',
+        event_code: 'Fire'
+      })
+    ]),
+    subCategories: new window.SubCategories([
+      new SubCategory({
+        id: 1,
+        name: 'Bridge Closure',
+        category_id: 2,
+        event_code: 'bridgeClose'
+      }), new SubCategory({
+        id: 2,
+        name: 'Road Closure',
+        category_id: 2,
+        event_code: 'roadClose'
+      }), new SubCategory({
+        id: 3,
+        name: 'Road Delay',
+        category_id: 2,
+        event_code: 'roadDelay'
+      }), new SubCategory({
+        id: 4,
+        name: 'High Water Level',
+        category_id: 1,
+        event_code: 'highWater'
+      }), new SubCategory({
+        id: 5,
+        name: 'Overland Flow Flood',
+        category_id: 1,
+        event_code: 'overflood'
+      }), new SubCategory({
+        id: 6,
+        name: 'Wildfire',
+        category_id: 3,
+        event_code: 'wildFire'
+      }), new SubCategory({
+        id: 7,
+        name: 'Urban Fire',
+        category_id: 3,
+        event_code: 'urbanFire'
+      }), new SubCategory({
+        id: 8,
+        name: 'Forest Fire',
+        category_id: 3,
+        event_code: 'forestFire'
+      })
+    ]),
+    severities: new window.Severities([
+      new Severity({
+        id: 1,
+        name: 'Extreme'
+      }), new Severity({
+        id: 2,
+        name: 'Moderate'
+      }), new Severity({
+        id: 3,
+        name: 'Unknown'
+      })
+    ]),
+    certainties: new window.Certainties([
+      new Certainty({
+        id: 1,
+        name: 'Likely'
+      }), new Certainty({
+        id: 2,
+        name: 'Observed'
+      }), new Certainty({
+        id: 3,
+        name: 'Possible'
+      })
+    ])
   };
   window.SecretInputView = (function() {
     __extends(SecretInputView, Backbone.View);
@@ -122,129 +213,36 @@
     }
     DetailInputView.prototype.render = function() {
       var categoriesView, certaintiesView, severitiesView, statusesView;
-      this.statuses = new window.Statuses([
-        new Status({
-          id: 1,
-          name: 'Test'
-        }), new Status({
-          id: 2,
-          name: 'Actual'
-        })
-      ]);
-      statusesView = new StatusesView({
+      statusesView = new LocationsView({
         el: $("select#status"),
-        collection: this.statuses
+        collection: app.statuses
       });
       statusesView.addAll();
-      this.categories = new window.Categories([
-        new Category({
-          id: 1,
-          name: 'Flood',
-          event_code: 'Met'
-        }), new Category({
-          id: 2,
-          name: 'Roadway',
-          event_code: 'Transport'
-        }), new Category({
-          id: 3,
-          name: 'Fire',
-          event_code: 'Fire'
-        })
-      ]);
-      categoriesView = new CategoriesView({
+      categoriesView = new LocationsView({
         el: $("select#category"),
-        collection: this.categories
+        collection: app.categories
       });
       categoriesView.addAll();
-      this.subCategories = new window.SubCategories([
-        new SubCategory({
-          id: 1,
-          name: 'Bridge Closure',
-          category_id: 2,
-          event_code: 'bridgeClose'
-        }), new SubCategory({
-          id: 2,
-          name: 'Road Closure',
-          category_id: 2,
-          event_code: 'roadClose'
-        }), new SubCategory({
-          id: 3,
-          name: 'Road Delay',
-          category_id: 2,
-          event_code: 'roadDelay'
-        }), new SubCategory({
-          id: 4,
-          name: 'High Water Level',
-          category_id: 1,
-          event_code: 'highWater'
-        }), new SubCategory({
-          id: 5,
-          name: 'Overland Flow Flood',
-          category_id: 1,
-          event_code: 'overflood'
-        }), new SubCategory({
-          id: 6,
-          name: 'Wildfire',
-          category_id: 3,
-          event_code: 'wildFire'
-        }), new SubCategory({
-          id: 7,
-          name: 'Urban Fire',
-          category_id: 3,
-          event_code: 'urbanFire'
-        }), new SubCategory({
-          id: 8,
-          name: 'Forest Fire',
-          category_id: 3,
-          event_code: 'forestFire'
-        })
-      ]);
-      this.subCategoriesView = new SubCategoriesView({
+      this.subCategoriesView = new LocationsView({
         el: $("select#subcategory"),
-        collection: this.subCategories
+        collection: app.subCategories
       });
       this.subCategoriesView.addAll();
-      this.severities = new window.Severities([
-        new Severity({
-          id: 1,
-          name: 'Extreme'
-        }), new Severity({
-          id: 2,
-          name: 'Moderate'
-        }), new Severity({
-          id: 3,
-          name: 'Unknown'
-        })
-      ]);
-      severitiesView = new SeveritiesView({
+      severitiesView = new LocationsView({
         el: $("select#severity"),
-        collection: this.severities
+        collection: app.severities
       });
       severitiesView.addAll();
-      this.certainties = new window.Certainties([
-        new Certainty({
-          id: 1,
-          name: 'Likely'
-        }), new Certainty({
-          id: 2,
-          name: 'Observed'
-        }), new Certainty({
-          id: 3,
-          name: 'Possible'
-        })
-      ]);
-      certaintiesView = new CertaintiesView({
+      certaintiesView = new LocationsView({
         el: $("select#certainty"),
-        collection: this.certainties
+        collection: app.certainties
       });
       return certaintiesView.addAll();
     };
     DetailInputView.prototype.populateSubCategories = function() {
       var subCategoriesForCategory;
       this.subCategoriesView.el.find('option').remove();
-      subCategoriesForCategory = this.subCategories.filter(function(category) {
-        return category.get('category_id') === parseInt($("select#category option:selected").val());
-      });
+      subCategoriesForCategory = app.subCategories.for_category(app.categories.get(parseInt($("select#category option:selected").val())));
       this.subCategoriesView = new SubCategoriesView({
         el: $("select#subcategory"),
         collection: new window.SubCategories(subCategoriesForCategory)
@@ -254,11 +252,11 @@
     };
     DetailInputView.prototype.next = function() {
       app.currentEntry.set({
-        status: this.statuses.get(parseInt($("select#status option:selected").val())),
-        category: this.categories.get(parseInt($("select#category option:selected").val())),
-        subcategory: this.subCategories.get(parseInt($("select#subcategory option:selected").val())),
-        severity: this.severities.get(parseInt($("select#severity option:selected").val())),
-        certainty: this.certainties.get(parseInt($("select#certainty option:selected").val())),
+        status: app.statuses.get(parseInt($("select#status option:selected").val())),
+        category: app.categories.get(parseInt($("select#category option:selected").val())),
+        subcategory: app.subCategories.get(parseInt($("select#subcategory option:selected").val())),
+        severity: app.severities.get(parseInt($("select#severity option:selected").val())),
+        certainty: app.certainties.get(parseInt($("select#certainty option:selected").val())),
         title: $('input#title').val(),
         description: $('textarea#entry_content').val(),
         expires: '2011-12-19T04:00:00Z'

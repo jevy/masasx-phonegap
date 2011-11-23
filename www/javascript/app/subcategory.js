@@ -19,6 +19,11 @@
     function SubCategories() {
       SubCategories.__super__.constructor.apply(this, arguments);
     }
+    SubCategories.prototype.for_category = function(category) {
+      return app.subCategories.filter(function(subcategory) {
+        return subcategory.get('category_id') === category.get('id');
+      });
+    };
     return SubCategories;
   })();
   window.SubCategoryView = (function() {
