@@ -112,7 +112,8 @@
   window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
     DetailInputView.prototype.events = {
-      "click a#send_to_masas": "next"
+      "click a#send_to_masas": "next",
+      "change select#category": "populateSubCategories"
     };
     function DetailInputView() {
       DetailInputView.__super__.constructor.apply(this, arguments);
@@ -144,7 +145,7 @@
           name: 'Roadway'
         }), new Category({
           id: 3,
-          name: 'Flood'
+          name: 'Fire'
         })
       ]);
       categoriesView = new CategoriesView({
@@ -152,6 +153,46 @@
         collection: categories
       });
       categoriesView.addAll();
+      this.subCategories = new window.SubCategories([
+        new SubCategory({
+          id: 1,
+          name: 'Bridge Closure',
+          category_id: 2
+        }), new SubCategory({
+          id: 2,
+          name: 'Road Closure',
+          category_id: 2
+        }), new SubCategory({
+          id: 3,
+          name: 'Road Delay',
+          category_id: 2
+        }), new SubCategory({
+          id: 4,
+          name: 'High Water Level',
+          category_id: 1
+        }), new SubCategory({
+          id: 5,
+          name: 'Overland Flow Flood',
+          category_id: 1
+        }), new SubCategory({
+          id: 6,
+          name: 'Wildfire',
+          category_id: 3
+        }), new SubCategory({
+          id: 7,
+          name: 'Urban Fire',
+          category_id: 3
+        }), new SubCategory({
+          id: 8,
+          name: 'Road Delay',
+          category_id: 3
+        })
+      ]);
+      this.subCategoriesView = new SubCategoriesView({
+        el: $("select#subcategory"),
+        collection: this.subCategories
+      });
+      this.subCategoriesView.addAll();
       severities = new window.Severities([
         new Severity({
           id: 1,
@@ -186,6 +227,19 @@
         collection: certainties
       });
       return certaintiesView.addAll();
+    };
+    DetailInputView.prototype.populateSubCategories = function() {
+      var subCategoriesForCategory;
+      this.subCategoriesView.el.find('option').remove();
+      subCategoriesForCategory = this.subCategories.filter(function(category) {
+        return category.get('category_id') === parseInt($("select#category option:selected").val());
+      });
+      this.subCategoriesView = new SubCategoriesView({
+        el: $("select#subcategory"),
+        collection: new window.SubCategories(subCategoriesForCategory)
+      });
+      this.subCategoriesView.addAll();
+      return this.subCategoriesView.el.selectmenu("refresh");
     };
     DetailInputView.prototype.next = function() {
       app.currentEntry.set({

@@ -103,8 +103,6 @@ class window.GoogleMapView extends Backbone.View
     render: ->
       map_height = 200 
       map_width = 400
-      #map_height = Math.ceil((app.screenHeight() > 640 ? 640 : app.screenHeight()) * 0.40);
-      #map_width = Math.ceil((app.screenWidth() > 640 ? 640 : app.screenWidth()) * 0.90);
 
       img_src = "http://maps.googleapis.com/maps/api/staticmap?center=" + @model.get('latitude') + "," + @model.get('longitude') +
         "&zoom=13&size=" + map_width + "x" + map_height + "&markers=color:blue%7C" + @model.get('latitude') + "," + @model.get('longitude') + "&markers=size:tiny&sensor=false"
@@ -118,6 +116,7 @@ class window.DetailInputView extends Backbone.View
 
   events:
     "click a#send_to_masas" : "next"
+    "change select#category" : "populateSubCategories"
 
   constructor: ->
     super
@@ -128,15 +127,25 @@ class window.DetailInputView extends Backbone.View
     statuses = new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
     statusesView = new StatusesView({el: $("select#status"), collection: statuses})
     statusesView.addAll()
-    categories = new window.Categories([new Category({id: 1, name: 'Flood'}), new Category({id: 2, name: 'Roadway'}), new Category({id: 3, name: 'Flood'})])
+    categories = new window.Categories([new Category({id: 1, name: 'Flood'}), new Category({id: 2, name: 'Roadway'}), new Category({id: 3, name: 'Fire'})])
     categoriesView = new CategoriesView({el: $("select#category"), collection: categories})
     categoriesView.addAll()
+    @subCategories = new window.SubCategories([new SubCategory({id: 1, name: 'Bridge Closure', category_id: 2}), new SubCategory({id: 2, name: 'Road Closure', category_id: 2}), new SubCategory({id: 3, name: 'Road Delay', category_id: 2}), new SubCategory({id: 4, name: 'High Water Level', category_id: 1}), new SubCategory({id: 5, name: 'Overland Flow Flood', category_id: 1}), new SubCategory({id: 6, name: 'Wildfire', category_id: 3}), new SubCategory({id: 7, name: 'Urban Fire', category_id: 3}), new SubCategory({id: 8, name: 'Road Delay', category_id: 3})])
+    @subCategoriesView = new SubCategoriesView({el: $("select#subcategory"), collection: @subCategories})
+    @subCategoriesView.addAll()
     severities = new window.Severities([new Severity({id: 1, name: 'Extreme'}), new Severity({id: 2, name: 'Moderate'}), new Severity({id: 3, name: 'Unknown'})])
     severitiesView = new SeveritiesView({el: $("select#severity"), collection: severities})
     severitiesView.addAll()
     certainties = new window.Certainties([new Certainty({id: 1, name: 'Likely'}), new Certainty({id: 2, name: 'Observed'}), new Certainty({id: 3, name: 'Possible'})])
     certaintiesView = new CertaintiesView({el: $("select#certainty"), collection: certainties})
     certaintiesView.addAll()
+    
+  populateSubCategories: ->
+    @subCategoriesView.el.find('option').remove()
+    subCategoriesForCategory = @subCategories.filter( (category) ->  category.get('category_id') == parseInt($("select#category option:selected").val()) )
+    @subCategoriesView = new SubCategoriesView({el: $("select#subcategory"), collection: new window.SubCategories(subCategoriesForCategory)})
+    @subCategoriesView.addAll()
+    @subCategoriesView.el.selectmenu("refresh")
     
   next: ->
     app.currentEntry.set({
