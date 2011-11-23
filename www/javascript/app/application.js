@@ -212,7 +212,7 @@
       this.delegateEvents();
     }
     DetailInputView.prototype.render = function() {
-      var categoriesView, certaintiesView, severitiesView, statusesView;
+      var categoriesView, certaintiesView, severitiesView, statusesView, subCategoriesForCategory;
       statusesView = new LocationsView({
         el: $("select#status"),
         collection: app.statuses
@@ -223,9 +223,10 @@
         collection: app.categories
       });
       categoriesView.addAll();
+      subCategoriesForCategory = app.subCategories.for_category(app.categories.get(parseInt($("select#category option:selected").val())));
       this.subCategoriesView = new LocationsView({
         el: $("select#subcategory"),
-        collection: app.subCategories
+        collection: new window.SubCategories(subCategoriesForCategory)
       });
       this.subCategoriesView.addAll();
       severitiesView = new LocationsView({
