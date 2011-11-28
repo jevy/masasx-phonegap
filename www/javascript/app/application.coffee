@@ -16,14 +16,10 @@ app =
 
   certainties: new window.Certainties([new Certainty({id: 1, name: 'Likely'}), new Certainty({id: 2, name: 'Observed'}), new Certainty({id: 3, name: 'Possible'})])
 
-#  activePage: ->
-#    $(".ui-page-active")
-#
-#  screenWidth: ->
-#    $('body').innerWidth();
-#
-#  screenHeight: ->
-#    $('body').innerHeight();
+  router: new $.mobile.Router([{ "#secret_input": -> app.currentView = new SecretInputView(); app.currentView.render() },
+                               { "#select_geo"  : -> app.currentView = new SelectGeoView();   app.currentView.render() },
+                               { "#confirm_geo" : -> app.currentView = new ConfirmGeoView();  app.currentView.render() },
+                               { "#detail_input": {events: 'bc', handler: -> app.currentView = new DetailInputView(); app.currentView.render()} }])
 
 # 
 # The model
@@ -44,9 +40,13 @@ class window.SecretInputView extends Backbone.View
     @delegateEvents()
 
   next: ->
-    app.currentEntry.set({secret: $('#entry_secret').val()})
-    app.currentView = new SelectGeoView()
-    app.currentView.render()
+    #if $('#entry_secret').val().length >= 4
+        app.currentEntry.set({secret: $('#entry_secret').val()})
+        
+    #else
+    #    $.mobile.changePage('custom_error')
+    #    app.currentView = new ErrorView({error: "Secret key too short"})
+    #    app.currentView.render()
 
 #
 # Selecting how to input the location
@@ -67,22 +67,15 @@ class window.SelectGeoView extends Backbone.View
     location = new Geolocation({street: $('input#street').val(), city: $('input#city').val(), province: $('input#province').val()})
     location.geocode()
     app.currentEntry.set({location: location}) # Do geocode
-    app.currentView = new ConfirmGeoView()
-    app.currentView.render()
     
   auto_geolocate: ->
     app.currentEntry.autoGeolocate()
-    app.currentView = new ConfirmGeoView()
-    app.currentView.render()
 
 #
 # Making sure they entered the right location
 #
 
 class window.ConfirmGeoView extends Backbone.View
-
-  events:
-    "click a#next"  : "next"
 
   constructor: ->
     super
@@ -96,10 +89,6 @@ class window.ConfirmGeoView extends Backbone.View
         $('input#longitude').val(app.currentEntry.get('location').get('longitude'));
         app.currentView.mapView = new GoogleMapView({model: app.currentEntry.get('location')})
         app.currentView.mapView.render()
-
-  next: ->
-    app.currentView = new DetailInputView()
-    app.currentView.render()
 
 #
 # Reusable map view
@@ -122,6 +111,14 @@ class window.GoogleMapView extends Backbone.View
       @el.prepend("<img id='map' src=" + img_src + ">");
       @el.width(map_width + 5);
       @el.height(map_height + 5);
+
+class window.ErrorView extends Backbone.View
+    constructor: (error) ->
+        super
+        @error = error
+
+    render: ->
+        $('#error_message').text(@error)
 
 class window.DetailInputView extends Backbone.View
 
@@ -173,10 +170,5 @@ class window.DetailInputView extends Backbone.View
 
 $(document).ready ->
   app.currentEntry = new Entry({id: 1})
-  app.currentView = new SecretInputView()
-  app.currentView.render()
-
-  #try
-  #  netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead")
   
 @app = app

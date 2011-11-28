@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" />
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/phonegap-1.2.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascript/vendor/jquery.mobile.router.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/underscore-min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/backbone-min.js"></script>
 
@@ -100,5 +101,17 @@
             <p><a href="#select_geo" id='send_to_masas' data-role="button">Send to MASAS</a></p>
         </div>
     </div>
+    <div data-role="page" id='custom_error'>
+        <div data-role="header" data-theme="d">
+            <h1>Error</h1>
+        </div>
+
+        <div data-role="content" data-theme="c">
+            <h1>Error on page</h1>
+            <p id='error_message'>There was a problem.  Fix it!</p>
+            <a href="#" data-role="button" data-rel="back" data-theme="b">OK</a>       
+        </div>
+    </div>
+    
   </body>
 </html>

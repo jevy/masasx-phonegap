@@ -100,6 +100,32 @@
         id: 3,
         name: 'Possible'
       })
+    ]),
+    router: new $.mobile.Router([
+      {
+        "#secret_input": function() {
+          app.currentView = new SecretInputView();
+          return app.currentView.render();
+        }
+      }, {
+        "#select_geo": function() {
+          app.currentView = new SelectGeoView();
+          return app.currentView.render();
+        }
+      }, {
+        "#confirm_geo": function() {
+          app.currentView = new ConfirmGeoView();
+          return app.currentView.render();
+        }
+      }, {
+        "#detail_input": {
+          events: 'bc',
+          handler: function() {
+            app.currentView = new DetailInputView();
+            return app.currentView.render();
+          }
+        }
+      }
     ])
   };
   window.SecretInputView = (function() {
@@ -113,11 +139,9 @@
       this.delegateEvents();
     }
     SecretInputView.prototype.next = function() {
-      app.currentEntry.set({
+      return app.currentEntry.set({
         secret: $('#entry_secret').val()
       });
-      app.currentView = new SelectGeoView();
-      return app.currentView.render();
     };
     return SecretInputView;
   })();
@@ -140,24 +164,17 @@
         province: $('input#province').val()
       });
       location.geocode();
-      app.currentEntry.set({
+      return app.currentEntry.set({
         location: location
       });
-      app.currentView = new ConfirmGeoView();
-      return app.currentView.render();
     };
     SelectGeoView.prototype.auto_geolocate = function() {
-      app.currentEntry.autoGeolocate();
-      app.currentView = new ConfirmGeoView();
-      return app.currentView.render();
+      return app.currentEntry.autoGeolocate();
     };
     return SelectGeoView;
   })();
   window.ConfirmGeoView = (function() {
     __extends(ConfirmGeoView, Backbone.View);
-    ConfirmGeoView.prototype.events = {
-      "click a#next": "next"
-    };
     function ConfirmGeoView() {
       ConfirmGeoView.__super__.constructor.apply(this, arguments);
       this.el = $('div#confirm_geo');
@@ -175,10 +192,6 @@
         });
         return app.currentView.mapView.render();
       }
-    };
-    ConfirmGeoView.prototype.next = function() {
-      app.currentView = new DetailInputView();
-      return app.currentView.render();
     };
     return ConfirmGeoView;
   })();
@@ -199,6 +212,17 @@
       return this.el.height(map_height + 5);
     };
     return GoogleMapView;
+  })();
+  window.ErrorView = (function() {
+    __extends(ErrorView, Backbone.View);
+    function ErrorView(error) {
+      ErrorView.__super__.constructor.apply(this, arguments);
+      this.error = error;
+    }
+    ErrorView.prototype.render = function() {
+      return $('#error_message').text(this.error);
+    };
+    return ErrorView;
   })();
   window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
@@ -267,11 +291,9 @@
     return DetailInputView;
   })();
   $(document).ready(function() {
-    app.currentEntry = new Entry({
+    return app.currentEntry = new Entry({
       id: 1
     });
-    app.currentView = new SecretInputView();
-    return app.currentView.render();
   });
   this.app = app;
 }).call(this);
