@@ -17,13 +17,10 @@ app =
   certainties: new window.Certainties([new Certainty({id: 1, name: 'Likely'}), new Certainty({id: 2, name: 'Observed'}), new Certainty({id: 3, name: 'Possible'})])
 
   router: new $.mobile.Router([{ "#secret_input": -> app.currentView = new SecretInputView(); app.currentView.render() },
+                               { "#custom_error": {events: 'bc', handler: -> preventDefault(); app.currentView = new ErrorView(); app.currentView.render()} },
                                { "#select_geo"  : -> app.currentView = new SelectGeoView();   app.currentView.render() },
                                { "#confirm_geo" : -> app.currentView = new ConfirmGeoView();  app.currentView.render() },
                                { "#detail_input": {events: 'bc', handler: -> app.currentView = new DetailInputView(); app.currentView.render()} }])
-
-# 
-# The model
-#
 
 #
 # Inputing the MASAS secret
@@ -40,13 +37,12 @@ class window.SecretInputView extends Backbone.View
     @delegateEvents()
 
   next: ->
-    #if $('#entry_secret').val().length >= 4
+    if $('#entry_secret').val().length >= 4
         app.currentEntry.set({secret: $('#entry_secret').val()})
-        
-    #else
-    #    $.mobile.changePage('custom_error')
-    #    app.currentView = new ErrorView({error: "Secret key too short"})
-    #    app.currentView.render()
+    else
+        $.mobile.changePage($('#custom_error'))
+        # Need to pass the error message
+        # Need to prevent the next page from propogating
 
 #
 # Selecting how to input the location

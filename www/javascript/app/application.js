@@ -108,6 +108,15 @@
           return app.currentView.render();
         }
       }, {
+        "#custom_error": {
+          events: 'bc',
+          handler: function() {
+            preventDefault();
+            app.currentView = new ErrorView();
+            return app.currentView.render();
+          }
+        }
+      }, {
         "#select_geo": function() {
           app.currentView = new SelectGeoView();
           return app.currentView.render();
@@ -139,9 +148,13 @@
       this.delegateEvents();
     }
     SecretInputView.prototype.next = function() {
-      return app.currentEntry.set({
-        secret: $('#entry_secret').val()
-      });
+      if ($('#entry_secret').val().length >= 4) {
+        return app.currentEntry.set({
+          secret: $('#entry_secret').val()
+        });
+      } else {
+        return $.mobile.changePage($('#custom_error'));
+      }
     };
     return SecretInputView;
   })();
