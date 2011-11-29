@@ -16,11 +16,36 @@ app =
 
   certainties: new window.Certainties([new Certainty({id: 1, name: 'Likely'}), new Certainty({id: 2, name: 'Observed'}), new Certainty({id: 3, name: 'Possible'})])
 
-  router: new $.mobile.Router([{ "#secret_input": -> app.currentView = new SecretInputView(); app.currentView.render() },
-                               { "#custom_error": {events: 'bc', handler: -> preventDefault(); app.currentView = new ErrorView(); app.currentView.render()} },
-                               { "#select_geo"  : -> app.currentView = new SelectGeoView();   app.currentView.render() },
-                               { "#confirm_geo" : -> app.currentView = new ConfirmGeoView();  app.currentView.render() },
-                               { "#detail_input": {events: 'bc', handler: -> app.currentView = new DetailInputView(); app.currentView.render()} }])
+  router: new $.mobile.Router([
+                                { "#secret_input": "secret_input" },
+                                { "#custom_error": "custom_error" },
+                                { "#select_geo"  : "select_geo" },
+                                { "#confirm_geo" : "confirm_geo" }, 
+                                { "#detail_input": {events: 'bc', handler: "detail_input" } }
+                              ],
+
+                                secret_input: (eventType, matchObj, ui, page) -> 
+                                                app.currentView = new SecretInputView()
+                                                app.currentView.render()
+
+                                custom_error: (eventType, matchObj, ui, page) -> 
+                                                #alert "custom error handler" 
+                                                app.currentView = new ErrorView() 
+                                                app.currentView.render() 
+
+                                select_geo: (eventType, matchObj, ui, page) -> 
+                                                #alert "select geo handler" 
+                                                app.currentView = new SelectGeoView()
+                                                app.currentView.render()
+
+                                confirm_geo: (eventType, matchObj, ui, page) -> 
+                                                app.currentView = new ConfirmGeoView()
+                                                app.currentView.render()
+
+                                detail_input: (eventType, matchObj, ui, page) -> 
+                                                app.currentView = new DetailInputView()
+                                                app.currentView.render()
+                             )
 
 #
 # Inputing the MASAS secret
@@ -36,13 +61,15 @@ class window.SecretInputView extends Backbone.View
     @el = $('div#secret_input')
     @delegateEvents()
 
-  next: ->
+  next: (event) ->
+    #alert "click event"
     if $('#entry_secret').val().length >= 4
         app.currentEntry.set({secret: $('#entry_secret').val()})
     else
+        event.preventDefault()
+        event.stopPropagation()
         $.mobile.changePage($('#custom_error'))
         # Need to pass the error message
-        # Need to prevent the next page from propogating
 
 #
 # Selecting how to input the location
@@ -109,12 +136,11 @@ class window.GoogleMapView extends Backbone.View
       @el.height(map_height + 5);
 
 class window.ErrorView extends Backbone.View
-    constructor: (error) ->
+    constructor:  ->
         super
-        @error = error
 
     render: ->
-        $('#error_message').text(@error)
+        $('#error_message').text("Error set in view")
 
 class window.DetailInputView extends Backbone.View
 
