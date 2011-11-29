@@ -25,24 +25,31 @@ app =
                               ],
 
                                 secret_input: (eventType, matchObj, ui, page) -> 
+                                                # Required so returning from error, doesn't trigger a route
+                                                if (ui.prevPage && ui.prevPage.hasClass("custom_error"))
+                                                    return
                                                 app.currentView = new SecretInputView()
                                                 app.currentView.render()
 
                                 custom_error: (eventType, matchObj, ui, page) -> 
-                                                #alert "custom error handler" 
                                                 app.currentView = new ErrorView() 
                                                 app.currentView.render() 
 
                                 select_geo: (eventType, matchObj, ui, page) -> 
-                                                #alert "select geo handler" 
+                                                if (ui.prevPage && ui.prevPage.hasClass("custom_error"))
+                                                    return
                                                 app.currentView = new SelectGeoView()
                                                 app.currentView.render()
 
                                 confirm_geo: (eventType, matchObj, ui, page) -> 
+                                                if (ui.prevPage && ui.prevPage.hasClass("custom_error"))
+                                                    return
                                                 app.currentView = new ConfirmGeoView()
                                                 app.currentView.render()
 
                                 detail_input: (eventType, matchObj, ui, page) -> 
+                                                if (ui.prevPage && ui.prevPage.hasClass("custom_error"))
+                                                    return
                                                 app.currentView = new DetailInputView()
                                                 app.currentView.render()
                              )
@@ -62,12 +69,12 @@ class window.SecretInputView extends Backbone.View
     @delegateEvents()
 
   next: (event) ->
-    #alert "click event"
     if $('#entry_secret').val().length >= 4
         app.currentEntry.set({secret: $('#entry_secret').val()})
     else
         event.preventDefault()
         event.stopPropagation()
+        app.currentEntry.set({error: 'Invalid Access ID'})
         $.mobile.changePage($('#custom_error'))
         # Need to pass the error message
 
@@ -140,7 +147,8 @@ class window.ErrorView extends Backbone.View
         super
 
     render: ->
-        $('#error_message').text("Error set in view")
+        $('#error_message').text(app.currentEntry.get('error'))
+        app.currentEntry.unset('error')
 
 class window.DetailInputView extends Backbone.View
 

@@ -118,6 +118,9 @@
       }
     ], {
       secret_input: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
         app.currentView = new SecretInputView();
         return app.currentView.render();
       },
@@ -126,14 +129,23 @@
         return app.currentView.render();
       },
       select_geo: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
         app.currentView = new SelectGeoView();
         return app.currentView.render();
       },
       confirm_geo: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
         app.currentView = new ConfirmGeoView();
         return app.currentView.render();
       },
       detail_input: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
         app.currentView = new DetailInputView();
         return app.currentView.render();
       }
@@ -157,6 +169,9 @@
       } else {
         event.preventDefault();
         event.stopPropagation();
+        app.currentEntry.set({
+          error: 'Invalid Access ID'
+        });
         return $.mobile.changePage($('#custom_error'));
       }
     };
@@ -236,7 +251,8 @@
       ErrorView.__super__.constructor.apply(this, arguments);
     }
     ErrorView.prototype.render = function() {
-      return $('#error_message').text("Error set in view");
+      $('#error_message').text(app.currentEntry.get('error'));
+      return app.currentEntry.unset('error');
     };
     return ErrorView;
   })();
