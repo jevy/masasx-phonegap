@@ -15,6 +15,7 @@ src_files:
     - vendor/underscore-min.js
     - vendor/backbone-min.js
     - vendor/backbone.localStorage-min.js
+    - vendor/date/date.js
     - app/*.js
     #- app/application.js
 

@@ -72,4 +72,4 @@ describe "Entry", ->
         it "expires", ->
             $expires = $xml.find( "expires" )
             expect($expires.attr('xmlns')).toEqual("http://purl.org/atompub/age/1.0")
-            expect($expires.text()).toEqual("2011-11-11 11:11:12")
+            expect($expires.text()).toEqual(Date.today().add(7).days().toISOString())

@@ -33,5 +33,5 @@ class window.Entry extends Backbone.Model
             "<title type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('title')}</div></div></title>" +
             "<content type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('description')}</div></div></content>" +
             "<point xmlns=\"http://www.georss.org/georss\">#{this.get('location').get('latitude')} #{this.get('location').get('longitude')}</point>" +
-            "<expires xmlns=\"http://purl.org/atompub/age/1.0\">#{this.get('expires')}</expires>" +
+            "<expires xmlns=\"http://purl.org/atompub/age/1.0\">#{Date.today().add(7).days().toISOString()}</expires>" +
             "</entry>"
