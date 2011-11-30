@@ -100,7 +100,56 @@
         id: 3,
         name: 'Possible'
       })
-    ])
+    ]),
+    router: new $.mobile.Router([
+      {
+        "#secret_input": "secret_input"
+      }, {
+        "#custom_error": "custom_error"
+      }, {
+        "#select_geo": "select_geo"
+      }, {
+        "#confirm_geo": "confirm_geo"
+      }, {
+        "#detail_input": {
+          events: 'bc',
+          handler: "detail_input"
+        }
+      }
+    ], {
+      secret_input: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
+        app.currentView = new SecretInputView();
+        return app.currentView.render();
+      },
+      custom_error: function(eventType, matchObj, ui, page) {
+        app.currentView = new ErrorView();
+        return app.currentView.render();
+      },
+      select_geo: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
+        app.currentView = new SelectGeoView();
+        return app.currentView.render();
+      },
+      confirm_geo: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
+        app.currentView = new ConfirmGeoView();
+        return app.currentView.render();
+      },
+      detail_input: function(eventType, matchObj, ui, page) {
+        if (ui.prevPage && ui.prevPage.hasClass("custom_error")) {
+          return;
+        }
+        app.currentView = new DetailInputView();
+        return app.currentView.render();
+      }
+    })
   };
   window.SecretInputView = (function() {
     __extends(SecretInputView, Backbone.View);
@@ -112,12 +161,19 @@
       this.el = $('div#secret_input');
       this.delegateEvents();
     }
-    SecretInputView.prototype.next = function() {
-      app.currentEntry.set({
-        secret: $('#entry_secret').val()
-      });
-      app.currentView = new SelectGeoView();
-      return app.currentView.render();
+    SecretInputView.prototype.next = function(event) {
+      if ($('#entry_secret').val().length >= 4) {
+        return app.currentEntry.set({
+          secret: $('#entry_secret').val()
+        });
+      } else {
+        event.preventDefault();
+        event.stopPropagation();
+        app.currentEntry.set({
+          error: 'Invalid Access ID'
+        });
+        return $.mobile.changePage($('#custom_error'));
+      }
     };
     return SecretInputView;
   })();
@@ -140,24 +196,17 @@
         province: $('input#province').val()
       });
       location.geocode();
-      app.currentEntry.set({
+      return app.currentEntry.set({
         location: location
       });
-      app.currentView = new ConfirmGeoView();
-      return app.currentView.render();
     };
     SelectGeoView.prototype.auto_geolocate = function() {
-      app.currentEntry.autoGeolocate();
-      app.currentView = new ConfirmGeoView();
-      return app.currentView.render();
+      return app.currentEntry.autoGeolocate();
     };
     return SelectGeoView;
   })();
   window.ConfirmGeoView = (function() {
     __extends(ConfirmGeoView, Backbone.View);
-    ConfirmGeoView.prototype.events = {
-      "click a#next": "next"
-    };
     function ConfirmGeoView() {
       ConfirmGeoView.__super__.constructor.apply(this, arguments);
       this.el = $('div#confirm_geo');
@@ -175,10 +224,6 @@
         });
         return app.currentView.mapView.render();
       }
-    };
-    ConfirmGeoView.prototype.next = function() {
-      app.currentView = new DetailInputView();
-      return app.currentView.render();
     };
     return ConfirmGeoView;
   })();
@@ -199,6 +244,17 @@
       return this.el.height(map_height + 5);
     };
     return GoogleMapView;
+  })();
+  window.ErrorView = (function() {
+    __extends(ErrorView, Backbone.View);
+    function ErrorView() {
+      ErrorView.__super__.constructor.apply(this, arguments);
+    }
+    ErrorView.prototype.render = function() {
+      $('#error_message').text(app.currentEntry.get('error'));
+      return app.currentEntry.unset('error');
+    };
+    return ErrorView;
   })();
   window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
@@ -267,11 +323,9 @@
     return DetailInputView;
   })();
   $(document).ready(function() {
-    app.currentEntry = new Entry({
+    return app.currentEntry = new Entry({
       id: 1
     });
-    app.currentView = new SecretInputView();
-    return app.currentView.render();
   });
   this.app = app;
 }).call(this);
