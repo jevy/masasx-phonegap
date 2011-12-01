@@ -189,8 +189,7 @@ class window.DetailInputView extends Backbone.View
                           severity: app.severities.get(parseInt($("select#severity option:selected").val())),  
                           certainty: app.certainties.get(parseInt($("select#certainty option:selected").val())), 
                           title: $('input#title').val(), 
-                          description: $('textarea#entry_content').val(),
-                          expires: '2011-12-19T04:00:00Z'
+                          description: $('textarea#entry_content').val()
                         })
     app.currentEntry.postToMasas()
 
