@@ -11,9 +11,11 @@ class window.Entry extends Backbone.Model
         navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {timeout:10000})
 
     autoLocateSuccess: (position) =>
+        alert "Found location"
         this.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
 
     autoLocateError: (error) =>
+        alert "Could not find location"
         this.unset(location)
 
     postToMasas: ->

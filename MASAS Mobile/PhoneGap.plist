@@ -20,6 +20,7 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>*.masas.ca</string>
 		<string>*.googleapis.com</string>
 		<string>*.gstatic.com</string>
 	</array>

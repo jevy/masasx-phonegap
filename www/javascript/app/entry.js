@@ -20,6 +20,7 @@
       });
     };
     Entry.prototype.autoLocateSuccess = function(position) {
+      alert("Found location");
       return this.set({
         location: new Geolocation({
           latitude: position.coords.latitude,
@@ -28,6 +29,7 @@
       });
     };
     Entry.prototype.autoLocateError = function(error) {
+      alert("Could not find location");
       return this.unset(location);
     };
     Entry.prototype.postToMasas = function() {
