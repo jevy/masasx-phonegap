@@ -12,6 +12,7 @@
     function Entry() {
       this.autoLocateError = __bind(this.autoLocateError, this);
       this.autoLocateSuccess = __bind(this.autoLocateSuccess, this);
+      this.autoGeolocate = __bind(this.autoGeolocate, this);
       Entry.__super__.constructor.apply(this, arguments);
     }
     Entry.prototype.autoGeolocate = function() {

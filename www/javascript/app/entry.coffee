@@ -7,16 +7,16 @@ class window.Entry extends Backbone.Model
     #    "severity" : app.severities.first()
     #    "certainty" : app.certainties.first()
 
-    autoGeolocate: ->
-        navigator.geolocation.getCurrentPosition(this.autoLocateSuccess, this.autoLocateError, {timeout:10000})
+    autoGeolocate: =>
+        navigator.geolocation.getCurrentPosition(@autoLocateSuccess, @autoLocateError, {timeout:10000})
 
     autoLocateSuccess: (position) =>
         alert "Found location"
-        this.set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
+        @set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
 
     autoLocateError: (error) =>
         alert "Could not find location"
-        this.unset(location)
+        @unset(location)
 
     postToMasas: ->
         $.ajax({

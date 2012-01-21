@@ -162,18 +162,30 @@
       this.delegateEvents();
     }
     SecretInputView.prototype.next = function(event) {
-      if ($('#entry_secret').val().length >= 4) {
-        return app.currentEntry.set({
-          secret: $('#entry_secret').val()
-        });
-      } else {
-        event.preventDefault();
-        event.stopPropagation();
-        app.currentEntry.set({
-          error: 'Invalid Access ID'
-        });
-        return $.mobile.changePage($('#custom_error'));
-      }
+      app.currentEntry.set({
+        secret: $('#entry_secret').val()
+      });
+      return $.ajax('https://sandbox.masas.ca/hub?secret=' + app.currentEntry.get('secret'), {
+        async: false,
+        statusCode: {
+          403: function() {
+            event.preventDefault();
+            event.stopPropagation();
+            app.currentEntry.set({
+              error: 'Invalid Access ID'
+            });
+            return $.mobile.changePage($('#custom_error'));
+          },
+          302: function() {
+            event.preventDefault();
+            event.stopPropagation();
+            app.currentEntry.set({
+              error: 'Invalid Access ID'
+            });
+            return $.mobile.changePage($('#custom_error'));
+          }
+        }
+      });
     };
     return SecretInputView;
   })();

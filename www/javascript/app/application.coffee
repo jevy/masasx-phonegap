@@ -69,14 +69,20 @@ class window.SecretInputView extends Backbone.View
     @delegateEvents()
 
   next: (event) ->
-    if $('#entry_secret').val().length >= 4
-        app.currentEntry.set({secret: $('#entry_secret').val()})
-    else
-        event.preventDefault()
-        event.stopPropagation()
-        app.currentEntry.set({error: 'Invalid Access ID'})
-        $.mobile.changePage($('#custom_error'))
-        # Need to pass the error message
+    app.currentEntry.set({secret: $('#entry_secret').val()})
+    $.ajax 'https://sandbox.masas.ca/hub?secret=' + app.currentEntry.get('secret'),
+        async: false,
+        statusCode: 
+            403: ->
+                event.preventDefault()
+                event.stopPropagation()
+                app.currentEntry.set({error: 'Invalid Access ID'})
+                $.mobile.changePage($('#custom_error'))
+            302: ->
+                event.preventDefault()
+                event.stopPropagation()
+                app.currentEntry.set({error: 'Invalid Access ID'})
+                $.mobile.changePage($('#custom_error'))
 
 #
 # Selecting how to input the location
