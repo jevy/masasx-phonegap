@@ -198,6 +198,7 @@
     function SelectGeoView() {
       SelectGeoView.__super__.constructor.apply(this, arguments);
       this.el = $('div#select_geo');
+      $('#use_current_location').addClass('ui-disabled');
       this.delegateEvents();
     }
     SelectGeoView.prototype.manual_geolocate = function() {

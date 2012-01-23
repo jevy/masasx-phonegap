@@ -97,6 +97,7 @@ class window.SelectGeoView extends Backbone.View
   constructor: ->
     super
     @el = $('div#select_geo')
+    $('#use_current_location').addClass('ui-disabled')  # Just until Phonegap fixes it
     @delegateEvents()
 
   manual_geolocate: ->
