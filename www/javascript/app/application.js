@@ -39,42 +39,42 @@
         id: 1,
         name: 'Bridge Closure',
         category_id: 2,
-        event_code: 'bridgeClose'
+        event_code: 'ems/incident/roadway/bridgeClosure'
       }), new SubCategory({
         id: 2,
         name: 'Road Closure',
         category_id: 2,
-        event_code: 'roadClose'
+        event_code: 'ems/incident/roadway/roadwayClosure'
       }), new SubCategory({
         id: 3,
         name: 'Road Delay',
         category_id: 2,
-        event_code: 'roadDelay'
+        event_code: 'ems/incident/roadway/roadwayDelay'
       }), new SubCategory({
         id: 4,
         name: 'High Water Level',
         category_id: 1,
-        event_code: 'highWater'
+        event_code: 'ems/incident/flood/highWater'
       }), new SubCategory({
         id: 5,
         name: 'Overland Flow Flood',
         category_id: 1,
-        event_code: 'overflood'
+        event_code: 'ems/incident/flood/overlandFlowFlood'
       }), new SubCategory({
         id: 6,
         name: 'Wildfire',
         category_id: 3,
-        event_code: 'wildFire'
+        event_code: 'ems/incident/fire/wildFire'
       }), new SubCategory({
         id: 7,
         name: 'Urban Fire',
         category_id: 3,
-        event_code: 'urbanFire'
+        event_code: 'ems/incident/fire/urbanFire'
       }), new SubCategory({
         id: 8,
         name: 'Forest Fire',
         category_id: 3,
-        event_code: 'forestFire'
+        event_code: 'ems/incident/fire/forestFire'
       })
     ]),
     severities: new window.Severities([
@@ -162,13 +162,10 @@
       this.delegateEvents();
     }
     SecretInputView.prototype.next = function(event) {
-      app.currentEntry.set({
-        secret: $('#entry_secret').val()
-      });
-      return $.ajax('https://sandbox.masas.ca/hub?secret=' + app.currentEntry.get('secret'), {
+      return $.ajax('https://sandbox2.masas-sics.ca/hub/feed?secret=' + $('#entry_secret').val(), {
         async: false,
         statusCode: {
-          403: function() {
+          401: function() {
             event.preventDefault();
             event.stopPropagation();
             app.currentEntry.set({
@@ -183,6 +180,11 @@
               error: 'Invalid Access ID'
             });
             return $.mobile.changePage($('#custom_error'));
+          },
+          200: function() {
+            return app.currentEntry.set({
+              secret: $('#entry_secret').val()
+            });
           }
         }
       });

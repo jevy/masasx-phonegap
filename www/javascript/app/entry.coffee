@@ -21,17 +21,17 @@ class window.Entry extends Backbone.Model
     postToMasas: ->
         $.ajax({
             type: 'POST',
-            url: 'https://sandbox.masas.ca/hub/feed?secret=w99hpn',
+            url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'),
             data: this.generate_entry_xml(),
             contentType: 'application/atom+xml'})
 
     generate_entry_xml: ->
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\">" +
-            "<category label=\"Status\" scheme=\"http://masas.ca/categories/status\" term=\"#{this.get('status').get('name')}\" />" +
-            "<category label=\"Severity\" scheme=\"http://masas.ca/categories/severity\" term=\"#{this.get('severity').get('name')}\" />" +
-            "<category label=\"Certainty\" scheme=\"http://masas.ca/categories/certainty\" term=\"#{this.get('certainty').get('name')}\" />" +
-            "<category label=\"Category\" scheme=\"http://masas.ca/categories/category\" term=\"#{this.get('category').get('event_code')}\" />" +
-            "<category label=\"Icon\" scheme=\"http://masas.ca/categories/icon\" term=\"#{this.get('subcategory').get('event_code')}\" />" +
+            "<category label=\"Status\" scheme=\"masas:category:status\" term=\"#{this.get('status').get('name')}\" />" +
+            "<category label=\"Severity\" scheme=\"masas:category:severity\" term=\"#{this.get('severity').get('name')}\" />" +
+            "<category label=\"Certainty\" scheme=\"masas:category:certainty\" term=\"#{this.get('certainty').get('name')}\" />" +
+            "<category label=\"Category\" scheme=\"masas:category:category\" term=\"#{this.get('category').get('event_code')}\" />" +
+            "<category label=\"Icon\" scheme=\"masas:category:icon\" term=\"#{this.get('subcategory').get('event_code')}\" />" +
             "<title type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('title')}</div></div></title>" +
             "<content type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">#{this.get('description')}</div></div></content>" +
             "<point xmlns=\"http://www.georss.org/georss\">#{this.get('location').get('latitude')} #{this.get('location').get('longitude')}</point>" +
