@@ -40,8 +40,21 @@
                     <label for="entry_secret">MASAS Secret Key</label>
                     <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
                 </p> 
-                <p><a href="#select_geo" id='next' data-role="button">Next</a></p>
+                <p><a href="#operation_selection" id='next' data-role="button">Next</a></p>
             </form>
+        </div>
+    </div>
+
+    <div data-role='page' id='operation_selection'>
+        <div data-role="header">
+            <h1>Select Operation</h1>
+        </div>
+        <div data-role="content">
+            <p><div id="status_message" style='color:#6ACF5F;'></div></p>
+            What would you like to do?
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#select_geo">Add Event</a></li>
+            </ul>
         </div>
     </div>
 
@@ -99,15 +112,15 @@
             <p><label for="severity">Severity</label><select id="severity"></select></p> 
             <p><label for="title">Title</label><input type="text" id="title"></p> 
             <p><label for="entry_content">Description</label><textarea id="entry_content"></textarea></p> 
-            <p><a href="#select_geo" id='send_to_masas' data-role="button">Send to MASAS</a></p>
+            <p><a href="#operation_selection" id='send_to_masas' data-role="button">Send to MASAS</a></p>
         </div>
     </div>
     <div data-role="page" id='custom_error' class='custom_error'>
-        <div data-role="header" data-theme="d">
+        <div data-role="header">
             <h1>Error</h1>
         </div>
 
-        <div data-role="content" data-theme="c">
+        <div data-role="content">
             <h1>Error on Form</h1>
             <p id='error_message'>There was a problem.  Fix it!</p>
             <a href="#" data-role="button" data-rel="back" data-theme="b">OK</a>       

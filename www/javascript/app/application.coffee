@@ -6,6 +6,8 @@
 app =
   currentEntry: null
 
+  statusMessage: null
+
   statuses: new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
 
   categories: new window.Categories([new Category({id: 1, name: 'Flood', event_code: 'Met'}), new Category({id: 2, name: 'Roadway', event_code: 'Transport'}), new Category({id: 3, name: 'Fire', event_code: 'Fire'})])
@@ -18,6 +20,7 @@ app =
 
   router: new $.mobile.Router([
                                 { "#secret_input": "secret_input" },
+                                { "#operation_selection": "operation_selection" },
                                 { "#custom_error": "custom_error" },
                                 { "#select_geo"  : "select_geo" },
                                 { "#confirm_geo" : "confirm_geo" }, 
@@ -30,6 +33,10 @@ app =
                                                     return
                                                 app.currentView = new SecretInputView()
                                                 app.currentView.render()
+                                
+                                operation_selection: (eventType, matchObj, ui, page) ->
+                                                app.currentView = new OperationSelectionView() 
+                                                app.currentView.render() 
 
                                 custom_error: (eventType, matchObj, ui, page) -> 
                                                 app.currentView = new ErrorView() 
@@ -84,6 +91,21 @@ class window.SecretInputView extends Backbone.View
                 $.mobile.changePage($('#custom_error'))
             200: ->
                 app.currentEntry.set({secret: $('#entry_secret').val()})
+
+#
+# Select menu
+#
+
+class window.OperationSelectionView extends Backbone.View
+  constructor: ->
+    super
+    @el = $('div#operation_selection')
+    app.currentEntry.bind('change', => this.render())
+    @delegateEvents()
+
+  render: ->
+    $('#status_message').text(app.statusMessage)
+    app.statusMessage = null
 
 #
 # Selecting how to input the location
@@ -200,6 +222,7 @@ class window.DetailInputView extends Backbone.View
                           description: $('textarea#entry_content').val()
                         })
     app.currentEntry.postToMasas()
+    app.statusMessage = "Successfully posted to MASAS"
 
 #
 # Start the app

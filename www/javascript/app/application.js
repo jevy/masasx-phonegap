@@ -10,6 +10,7 @@
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   app = {
     currentEntry: null,
+    statusMessage: null,
     statuses: new window.Statuses([
       new Status({
         id: 1,
@@ -105,6 +106,8 @@
       {
         "#secret_input": "secret_input"
       }, {
+        "#operation_selection": "operation_selection"
+      }, {
         "#custom_error": "custom_error"
       }, {
         "#select_geo": "select_geo"
@@ -122,6 +125,10 @@
           return;
         }
         app.currentView = new SecretInputView();
+        return app.currentView.render();
+      },
+      operation_selection: function(eventType, matchObj, ui, page) {
+        app.currentView = new OperationSelectionView();
         return app.currentView.render();
       },
       custom_error: function(eventType, matchObj, ui, page) {
@@ -190,6 +197,22 @@
       });
     };
     return SecretInputView;
+  })();
+  window.OperationSelectionView = (function() {
+    __extends(OperationSelectionView, Backbone.View);
+    function OperationSelectionView() {
+      OperationSelectionView.__super__.constructor.apply(this, arguments);
+      this.el = $('div#operation_selection');
+      app.currentEntry.bind('change', __bind(function() {
+        return this.render();
+      }, this));
+      this.delegateEvents();
+    }
+    OperationSelectionView.prototype.render = function() {
+      $('#status_message').text(app.statusMessage);
+      return app.statusMessage = null;
+    };
+    return OperationSelectionView;
   })();
   window.SelectGeoView = (function() {
     __extends(SelectGeoView, Backbone.View);
@@ -332,7 +355,8 @@
         title: $('input#title').val(),
         description: $('textarea#entry_content').val()
       });
-      return app.currentEntry.postToMasas();
+      app.currentEntry.postToMasas();
+      return app.statusMessage = "Successfully posted to MASAS";
     };
     return DetailInputView;
   })();

@@ -37,6 +37,7 @@
       return $.ajax({
         type: 'POST',
         url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'),
+        async: false,
         data: this.generate_entry_xml(),
         contentType: 'application/atom+xml'
       });
