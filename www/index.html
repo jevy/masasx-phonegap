@@ -24,6 +24,7 @@
             document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/certainty.js?" + Math.random() + "'></" + "script>");
             document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/entry.js?" + Math.random() + "'></" + "script>");
             document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/MasasEntry.js?" + Math.random() + "'></" + "script>");
+            document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/image.js?" + Math.random() + "'></" + "script>");
             document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/application.js?" + Math.random() + "'></" + "script>");
         </script>
   </head>
@@ -96,7 +97,18 @@
                 <label for="longitude">Longitude</label>
                 <input id="longitude" name="entry[longitude]" size="15" type="text" />
             </p> 
-            <p><a href="#detail_input" id='next' data-role="button">Next</a></p>
+            <p><a href="#capture_image" id='next' data-role="button">Next</a></p>
+        </div>
+    </div>
+
+    <div data-role='page' id='capture_image' data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Upload Photo</h1>
+        </div>
+        <div data-role="content">
+            <a id="launch_image_capture" data-role="button">Capture Photo</a>
+            <img style="display:none;width:300px;height:400px;" id="imagePreview" src="" />
+            <a href="#detail_input" data-role="button">Next</a>
         </div>
     </div>
 

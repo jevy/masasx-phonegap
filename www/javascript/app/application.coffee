@@ -24,6 +24,7 @@ app =
                                 { "#custom_error": "custom_error" },
                                 { "#select_geo"  : "select_geo" },
                                 { "#confirm_geo" : "confirm_geo" }, 
+                                { "#capture_image" : "capture_image" }, 
                                 { "#detail_input": {events: 'bc', handler: "detail_input" } }
                               ],
 
@@ -53,6 +54,10 @@ app =
                                                     return
                                                 app.currentView = new ConfirmGeoView()
                                                 app.currentView.render()
+
+                                capture_image: (eventType, matchObj, ui, page) -> 
+                                                app.currentView = new CaptureImageView() 
+                                                app.currentView.render() 
 
                                 detail_input: (eventType, matchObj, ui, page) -> 
                                                 if (ui.prevPage && ui.prevPage.hasClass("custom_error"))
@@ -172,6 +177,10 @@ class window.GoogleMapView extends Backbone.View
       @el.width(map_width + 5);
       @el.height(map_height + 5);
 
+# 
+# Used if secret is wrong
+#
+
 class window.ErrorView extends Backbone.View
     constructor:  ->
         super
@@ -179,6 +188,37 @@ class window.ErrorView extends Backbone.View
     render: ->
         $('#error_message').text(app.currentEntry.get('error'))
         app.currentEntry.unset('error')
+
+# 
+# To capture an image
+#
+
+class window.CaptureImageView extends Backbone.View
+
+  events:
+    "click a#launch_image_capture" : "capture_image"
+
+  constructor: ->
+    super
+    @el = $('div#capture_image')
+    app.currentEntry.bind('change', => this.render())
+    @delegateEvents()
+
+  render: ->
+    if (app.currentEntry.image)
+        image = document.getElementById('imagePreview')
+        image.src = app.currentEntry.image.file_location
+        image.style.display = 'block'
+    
+  capture_image: ->
+    new_image = new Image
+    new_image.capture()
+    app.currentEntry.set({image:new_image})
+
+
+#
+# For category and extra posting information
+#
 
 class window.DetailInputView extends Backbone.View
 

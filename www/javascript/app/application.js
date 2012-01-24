@@ -114,6 +114,8 @@
       }, {
         "#confirm_geo": "confirm_geo"
       }, {
+        "#capture_image": "capture_image"
+      }, {
         "#detail_input": {
           events: 'bc',
           handler: "detail_input"
@@ -147,6 +149,10 @@
           return;
         }
         app.currentView = new ConfirmGeoView();
+        return app.currentView.render();
+      },
+      capture_image: function(eventType, matchObj, ui, page) {
+        app.currentView = new CaptureImageView();
         return app.currentView.render();
       },
       detail_input: function(eventType, matchObj, ui, page) {
@@ -293,6 +299,37 @@
       return app.currentEntry.unset('error');
     };
     return ErrorView;
+  })();
+  window.CaptureImageView = (function() {
+    __extends(CaptureImageView, Backbone.View);
+    CaptureImageView.prototype.events = {
+      "click a#launch_image_capture": "capture_image"
+    };
+    function CaptureImageView() {
+      CaptureImageView.__super__.constructor.apply(this, arguments);
+      this.el = $('div#capture_image');
+      app.currentEntry.bind('change', __bind(function() {
+        return this.render();
+      }, this));
+      this.delegateEvents();
+    }
+    CaptureImageView.prototype.render = function() {
+      var image;
+      if (app.currentEntry.image) {
+        image = document.getElementById('imagePreview');
+        image.src = app.currentEntry.image.file_location;
+        return image.style.display = 'block';
+      }
+    };
+    CaptureImageView.prototype.capture_image = function() {
+      var new_image;
+      new_image = new Image;
+      new_image.capture();
+      return app.currentEntry.set({
+        image: new_image
+      });
+    };
+    return CaptureImageView;
   })();
   window.DetailInputView = (function() {
     __extends(DetailInputView, Backbone.View);
