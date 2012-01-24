@@ -315,19 +315,14 @@
     }
     CaptureImageView.prototype.render = function() {
       var image;
-      if (app.currentEntry.image) {
+      if (app.currentEntry.get('image')) {
         image = document.getElementById('imagePreview');
-        image.src = app.currentEntry.image.file_location;
+        image.src = app.currentEntry.get('image').get('file_location');
         return image.style.display = 'block';
       }
     };
     CaptureImageView.prototype.capture_image = function() {
-      var new_image;
-      new_image = new Image;
-      new_image.capture();
-      return app.currentEntry.set({
-        image: new_image
-      });
+      return app.currentEntry.capture_image();
     };
     return CaptureImageView;
   })();

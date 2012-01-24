@@ -1,12 +1,5 @@
 class window.Entry extends Backbone.Model
 
-    #defaults:
-    #    "status" : app.statuses.first()
-    #    "category" : app.categories.first()
-    #    "subcategory" : app.subcategory.for_category(app.categories.first())
-    #    "severity" : app.severities.first()
-    #    "certainty" : app.certainties.first()
-
     autoGeolocate: =>
         navigator.geolocation.getCurrentPosition(@autoLocateSuccess, @autoLocateError, {timeout:10000})
 
@@ -17,6 +10,10 @@ class window.Entry extends Backbone.Model
     autoLocateError: (error) =>
         alert "Could not find location"
         @unset(location)
+
+    capture_image: =>
+        new_image = new Image(this)
+        new_image.capture()
 
     postToMasas: ->
         $.ajax({

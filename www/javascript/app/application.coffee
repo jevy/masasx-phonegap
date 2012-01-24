@@ -205,16 +205,13 @@ class window.CaptureImageView extends Backbone.View
     @delegateEvents()
 
   render: ->
-    if (app.currentEntry.image)
+    if app.currentEntry.get('image')
         image = document.getElementById('imagePreview')
-        image.src = app.currentEntry.image.file_location
+        image.src = app.currentEntry.get('image').get('file_location')
         image.style.display = 'block'
     
   capture_image: ->
-    new_image = new Image
-    new_image.capture()
-    app.currentEntry.set({image:new_image})
-
+    app.currentEntry.capture_image()
 
 #
 # For category and extra posting information

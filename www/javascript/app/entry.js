@@ -10,6 +10,7 @@
   window.Entry = (function() {
     __extends(Entry, Backbone.Model);
     function Entry() {
+      this.capture_image = __bind(this.capture_image, this);
       this.autoLocateError = __bind(this.autoLocateError, this);
       this.autoLocateSuccess = __bind(this.autoLocateSuccess, this);
       this.autoGeolocate = __bind(this.autoGeolocate, this);
@@ -32,6 +33,11 @@
     Entry.prototype.autoLocateError = function(error) {
       alert("Could not find location");
       return this.unset(location);
+    };
+    Entry.prototype.capture_image = function() {
+      var new_image;
+      new_image = new Image(this);
+      return new_image.capture();
     };
     Entry.prototype.postToMasas = function() {
       return $.ajax({
