@@ -50,7 +50,7 @@
       file_uri = this.get('file_location');
       alert('Passed options');
       ft = new FileTransfer();
-      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'), this.uploadSuccess, this.uploadFail, options);
+      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode, this.uploadSuccess, this.uploadFail, options);
       return alert('Done upload');
     };
     Image.prototype.uploadSuccess = function(r) {

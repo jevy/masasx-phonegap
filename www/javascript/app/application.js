@@ -11,6 +11,7 @@
   app = {
     currentEntry: null,
     statusMessage: null,
+    currentAccessCode: null,
     statuses: new window.Statuses([
       new Status({
         id: 1,
@@ -195,9 +196,7 @@
             return $.mobile.changePage($('#custom_error'));
           },
           200: function() {
-            return app.currentEntry.set({
-              secret: $('#entry_secret').val()
-            });
+            return app.currentAccessCode = $('#entry_secret').val();
           }
         }
       });

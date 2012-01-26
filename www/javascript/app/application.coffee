@@ -8,6 +8,8 @@ app =
 
   statusMessage: null
 
+  currentAccessCode: null
+
   statuses: new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
 
   categories: new window.Categories([new Category({id: 1, name: 'Flood', event_code: 'Met'}), new Category({id: 2, name: 'Roadway', event_code: 'Transport'}), new Category({id: 3, name: 'Fire', event_code: 'Fire'})])
@@ -95,7 +97,7 @@ class window.SecretInputView extends Backbone.View
                 app.currentEntry.set({error: 'Invalid Access ID'})
                 $.mobile.changePage($('#custom_error'))
             200: ->
-                app.currentEntry.set({secret: $('#entry_secret').val()})
+                app.currentAccessCode = $('#entry_secret').val()
 
 #
 # Select menu

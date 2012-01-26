@@ -27,7 +27,7 @@ class window.Image extends Backbone.Model
         alert('Passed options') 
         ft = new FileTransfer()
         ft.upload file_uri, 
-                  'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'), 
+                  'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode, 
                   @uploadSuccess, @uploadFail, options
         alert('Done upload') 
 
