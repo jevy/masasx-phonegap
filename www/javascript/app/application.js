@@ -308,6 +308,7 @@
     function CaptureImageView() {
       CaptureImageView.__super__.constructor.apply(this, arguments);
       this.el = $('div#capture_image');
+      $('a#launch_image_capture').addClass('ui-disabled');
       app.currentEntry.bind('change', __bind(function() {
         return this.render();
       }, this));

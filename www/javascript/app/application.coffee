@@ -201,6 +201,7 @@ class window.CaptureImageView extends Backbone.View
   constructor: ->
     super
     @el = $('div#capture_image')
+    $('a#launch_image_capture').addClass('ui-disabled')  # Just until we figure out multi-part posts
     app.currentEntry.bind('change', => this.render())
     @delegateEvents()
 

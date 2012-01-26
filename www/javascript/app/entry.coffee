@@ -15,13 +15,17 @@ class window.Entry extends Backbone.Model
         new_image = new Image(this)
         new_image.capture()
 
-    postToMasas: ->
-        $.ajax({
-            type: 'POST',
-            url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'),
-            async: false,
-            data: this.generate_entry_xml(),
-            contentType: 'application/atom+xml'})
+    postToMasas: =>
+        if @get('image')
+            @get('image').uploadImage()
+
+        else
+            $.ajax({
+                type: 'POST',
+                url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'),
+                async: false,
+                data: this.generate_entry_xml(),
+                contentType: 'application/atom+xml'})
 
     generate_entry_xml: ->
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\">" +

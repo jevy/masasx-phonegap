@@ -10,6 +10,7 @@
   window.Image = (function() {
     __extends(Image, Backbone.Model);
     function Image() {
+      this.uploadImage = __bind(this.uploadImage, this);
       this.onPhotoURISuccess = __bind(this.onPhotoURISuccess, this);
       this.onFail = __bind(this.onFail, this);
       this.capture = __bind(this.capture, this);
@@ -39,6 +40,24 @@
       return this.get('entry').set({
         image: this
       });
+    };
+    Image.prototype.uploadImage = function() {
+      var file_uri, ft, options;
+      alert('About to upload');
+      options = new FileUploadOptions();
+      options.fileName = 'image.jpeg';
+      options.mimeType = 'image/jpeg';
+      file_uri = this.get('file_location');
+      alert('Passed options');
+      ft = new FileTransfer();
+      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentEntry.get('secret'), this.uploadSuccess, this.uploadFail, options);
+      return alert('Done upload');
+    };
+    Image.prototype.uploadSuccess = function(r) {
+      return alert(r.response);
+    };
+    Image.prototype.uploadFail = function(error) {
+      return alert('upload failed because: ' + error.code);
     };
     return Image;
   })();
