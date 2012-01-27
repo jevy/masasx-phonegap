@@ -28,27 +28,27 @@ describe "Entry", ->
         it "has a status category", ->
             $category = $xml.find( "category[label='Status']" )
             expect($category.attr('term')).toEqual("Test")
-            expect($category.attr('scheme')).toEqual("http://masas.ca/categories/status")
+            expect($category.attr('scheme')).toEqual("masas:category:status")
 
         it "has a severity category", ->
             $category = $xml.find( "category[label='Severity']" )
             expect($category.attr('term')).toEqual("Extreme")
-            expect($category.attr('scheme')).toEqual("http://masas.ca/categories/severity")
+            expect($category.attr('scheme')).toEqual("masas:category:severity")
 
         it "has a certainty category", ->
             $category = $xml.find( "category[label='Certainty']" )
             expect($category.attr('term')).toEqual("Possibly")
-            expect($category.attr('scheme')).toEqual("http://masas.ca/categories/certainty")
+            expect($category.attr('scheme')).toEqual("masas:category:certainty")
         
         it "has a 'category' category", ->
             $category = $xml.find( "category[label='Category']" )
             expect($category.attr('term')).toEqual("Transport")
-            expect($category.attr('scheme')).toEqual("http://masas.ca/categories/category")
+            expect($category.attr('scheme')).toEqual("masas:category:category")
 
         it "has an icon", ->
             $category = $xml.find( "category[label='Icon']" )
             expect($category.attr('term')).toEqual("rdCondition")
-            expect($category.attr('scheme')).toEqual("http://masas.ca/categories/icon")
+            expect($category.attr('scheme')).toEqual("masas:category:icon")
 
         it "has a title", ->
             $title = $xml.find( "title" )

@@ -51,31 +51,31 @@
         var $category;
         $category = $xml.find("category[label='Status']");
         expect($category.attr('term')).toEqual("Test");
-        return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/status");
+        return expect($category.attr('scheme')).toEqual("masas:category:status");
       });
       it("has a severity category", function() {
         var $category;
         $category = $xml.find("category[label='Severity']");
         expect($category.attr('term')).toEqual("Extreme");
-        return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/severity");
+        return expect($category.attr('scheme')).toEqual("masas:category:severity");
       });
       it("has a certainty category", function() {
         var $category;
         $category = $xml.find("category[label='Certainty']");
         expect($category.attr('term')).toEqual("Possibly");
-        return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/certainty");
+        return expect($category.attr('scheme')).toEqual("masas:category:certainty");
       });
       it("has a 'category' category", function() {
         var $category;
         $category = $xml.find("category[label='Category']");
         expect($category.attr('term')).toEqual("Transport");
-        return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/category");
+        return expect($category.attr('scheme')).toEqual("masas:category:category");
       });
       it("has an icon", function() {
         var $category;
         $category = $xml.find("category[label='Icon']");
         expect($category.attr('term')).toEqual("rdCondition");
-        return expect($category.attr('scheme')).toEqual("http://masas.ca/categories/icon");
+        return expect($category.attr('scheme')).toEqual("masas:category:icon");
       });
       it("has a title", function() {
         var $title;

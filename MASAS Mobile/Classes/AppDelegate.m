@@ -39,6 +39,9 @@
 		NSLog(@"MASAS Mobile launchOptions = %@",url);
 	}
 	
+    // Remove me after debugging
+    //[NSClassFromString(@"WebView") _enableRemoteInspector];
+    
 	return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

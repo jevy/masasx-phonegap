@@ -14,14 +14,15 @@
       this.login = __bind(this.login, this);
       User.__super__.constructor.apply(this, arguments);
     }
+    User.prototype.localStorage = new Store('UserLocalStore');
     User.currentUser = function() {
-      var full_id, store_id, user;
+      var full_id, new_user;
       if (localStorage.length === 0 || localStorage.length === 1) {
         return null;
       }
-      store_id = window.localStorage.getItem('UserLocalStore');
-      full_id = 'UserLocalStore-' + store_id;
-      return user = new User(JSON.parse(window.localStorage.getItem(full_id)));
+      full_id = 'UserLocalStore-' + localStorage.getItem('UserLocalStore');
+      new_user = new User(JSON.parse(localStorage.getItem(full_id)));
+      return new_user;
     };
     User.prototype.login = function() {
       return this.save();
