@@ -8,6 +8,8 @@ app =
 
   statusMessage: null
 
+  userCollection: null
+
   statuses: new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
 
   categories: new window.Categories([new Category({id: 1, name: 'Flood', event_code: 'Met'}), new Category({id: 2, name: 'Roadway', event_code: 'Transport'}), new Category({id: 3, name: 'Fire', event_code: 'Fire'})])
@@ -269,5 +271,10 @@ class window.DetailInputView extends Backbone.View
 
 $(document).ready ->
   app.currentEntry = new Entry({id: 1})
+
+  # Get the collection with the stored user
+  userCollection = new UserCollection()
+  window.app = 
+      userCollection: userCollection
   
 @app = app

@@ -11,6 +11,7 @@
   app = {
     currentEntry: null,
     statusMessage: null,
+    userCollection: null,
     statuses: new window.Statuses([
       new Status({
         id: 1,
@@ -396,9 +397,14 @@
     return DetailInputView;
   })();
   $(document).ready(function() {
-    return app.currentEntry = new Entry({
+    var userCollection;
+    app.currentEntry = new Entry({
       id: 1
     });
+    userCollection = new UserCollection();
+    return window.app = {
+      userCollection: userCollection
+    };
   });
   this.app = app;
 }).call(this);

@@ -14,22 +14,28 @@
       this.login = __bind(this.login, this);
       User.__super__.constructor.apply(this, arguments);
     }
-    User.prototype.localStorage = new Store('UserLocalStore');
-    User.currentUser = function() {
-      var full_id, new_user;
-      if (localStorage.length === 0 || localStorage.length === 1) {
-        return null;
-      }
-      full_id = 'UserLocalStore-' + localStorage.getItem('UserLocalStore');
-      new_user = new User(JSON.parse(localStorage.getItem(full_id)));
-      return new_user;
-    };
     User.prototype.login = function() {
+      app.userCollection.add(this);
       return this.save();
     };
     User.prototype.logout = function() {
       return this.destroy();
     };
     return User;
+  })();
+  window.UserCollection = (function() {
+    __extends(UserCollection, Backbone.Collection);
+    function UserCollection() {
+      this.currentUser = __bind(this.currentUser, this);
+      UserCollection.__super__.constructor.apply(this, arguments);
+    }
+    UserCollection.prototype.initialize = function() {
+      return this.reset();
+    };
+    UserCollection.prototype.localStorage = new Store('UserLocalStore');
+    UserCollection.prototype.currentUser = function() {
+      return this.first() || null;
+    };
+    return UserCollection;
   })();
 }).call(this);
