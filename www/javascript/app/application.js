@@ -11,7 +11,6 @@
   app = {
     currentEntry: null,
     statusMessage: null,
-    userCollection: null,
     statuses: new window.Statuses([
       new Status({
         id: 1,
@@ -197,10 +196,8 @@
           },
           200: function() {
             var current_user;
-            current_user = new User({
-              access_code: $('#entry_secret').val()
-            });
-            return current_user.save();
+            current_user = new User();
+            return current_user.login($('#entry_secret').val());
           }
         }
       });
@@ -397,14 +394,17 @@
     return DetailInputView;
   })();
   $(document).ready(function() {
-    var userCollection;
+    var user;
     app.currentEntry = new Entry({
       id: 1
     });
-    userCollection = new UserCollection();
-    return window.app = {
-      userCollection: userCollection
-    };
+    user = new User();
+    if (user.currentUser() !== null) {
+      $.mobile.changePage($('#operation_selection'));
+    } else {
+      $.mobile.changePage($('#secret_input'));
+    }
+    return end;
   });
   this.app = app;
 }).call(this);

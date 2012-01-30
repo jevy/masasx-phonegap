@@ -25,9 +25,10 @@ class window.Image extends Backbone.Model
         file_uri = @get('file_location')
 
         alert('Passed options') 
+        user = new User()
         ft = new FileTransfer()
         ft.upload file_uri, 
-                  'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode, 
+                  'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(), 
                   @uploadSuccess, @uploadFail, options
         alert('Done upload') 
 

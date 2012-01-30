@@ -20,9 +20,10 @@ class window.Entry extends Backbone.Model
             @get('image').uploadImage()
 
         else
+            user = new User()
             $.ajax({
                 type: 'POST',
-                url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode,
+                url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(),
                 async: false,
                 data: this.generate_entry_xml(),
                 contentType: 'application/atom+xml'})

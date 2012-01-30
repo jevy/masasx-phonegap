@@ -41,12 +41,14 @@
       return new_image.capture();
     };
     Entry.prototype.postToMasas = function() {
+      var user;
       if (this.get('image')) {
         return this.get('image').uploadImage();
       } else {
+        user = new User();
         return $.ajax({
           type: 'POST',
-          url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode,
+          url: 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(),
           async: false,
           data: this.generate_entry_xml(),
           contentType: 'application/atom+xml'

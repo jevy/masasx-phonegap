@@ -1,18 +1,10 @@
-class window.User extends Backbone.Model
+class window.User
 
-    login: =>
-        app.userCollection.add(this)
-        @save()
+    currentUser: ->
+        localStorage.getItem('currentAccessCode')
+
+    login: (access_code) ->
+        localStorage.setItem('currentAccessCode', access_code)
         
-    logout: =>
-        @destroy() 
-
-class window.UserCollection extends Backbone.Collection
-
-    initialize: ->
-        @reset()
-        
-    localStorage: new Store('UserLocalStore')
-
-    currentUser: =>
-        @first() || null
+    logout: ->
+        localStorage.removeItem('currentAccessCode')

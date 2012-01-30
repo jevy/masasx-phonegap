@@ -8,8 +8,6 @@ app =
 
   statusMessage: null
 
-  userCollection: null
-
   statuses: new window.Statuses([new Status({id: 1, name: 'Test'}), new Status({id: 2, name: 'Actual'})])
 
   categories: new window.Categories([new Category({id: 1, name: 'Flood', event_code: 'Met'}), new Category({id: 2, name: 'Roadway', event_code: 'Transport'}), new Category({id: 3, name: 'Fire', event_code: 'Fire'})])
@@ -97,8 +95,8 @@ class window.SecretInputView extends Backbone.View
                 app.currentEntry.set({error: 'Invalid Access ID'})
                 $.mobile.changePage($('#custom_error'))
             200: ->
-                current_user = new User({access_code: $('#entry_secret').val()})
-                current_user.save()
+                current_user = new User()
+                current_user.login($('#entry_secret').val())
 
 #
 # Select menu
@@ -272,9 +270,13 @@ class window.DetailInputView extends Backbone.View
 $(document).ready ->
   app.currentEntry = new Entry({id: 1})
 
-  # Get the collection with the stored user
-  userCollection = new UserCollection()
-  window.app = 
-      userCollection: userCollection
+  user = new User()
+
+  # Decide where to start depending if we're logged in
+  if user.currentUser() != null
+    $.mobile.changePage($('#operation_selection'))
+  else
+    $.mobile.changePage($('#secret_input'))
+  end
   
 @app = app

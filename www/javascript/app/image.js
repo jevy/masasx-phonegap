@@ -42,15 +42,16 @@
       });
     };
     Image.prototype.uploadImage = function() {
-      var file_uri, ft, options;
+      var file_uri, ft, options, user;
       alert('About to upload');
       options = new FileUploadOptions();
       options.fileName = 'image.jpeg';
       options.mimeType = 'image/jpeg';
       file_uri = this.get('file_location');
       alert('Passed options');
+      user = new User();
       ft = new FileTransfer();
-      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + app.currentAccessCode, this.uploadSuccess, this.uploadFail, options);
+      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(), this.uploadSuccess, this.uploadFail, options);
       return alert('Done upload');
     };
     Image.prototype.uploadSuccess = function(r) {
