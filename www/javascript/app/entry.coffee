@@ -1,14 +1,13 @@
 class window.Entry extends Backbone.Model
 
-    autoGeolocate: =>
-        navigator.geolocation.getCurrentPosition(@autoLocateSuccess, @autoLocateError, {timeout:10000})
+    autoGeolocate: ->
+         navigator.geolocation.getCurrentPosition(@autoLocateSuccess, @autoLocateError, {timeout:10000})
 
     autoLocateSuccess: (position) =>
-        alert "Found location"
-        @set({location: new Geolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
+        @set({location: new GoogleGeolocation({latitude: position.coords.latitude, longitude: position.coords.longitude})})
 
     autoLocateError: (error) =>
-        alert "Could not find location"
+        alert "Could not find location because " + error
         @unset(location)
 
     capture_image: =>
@@ -18,7 +17,6 @@ class window.Entry extends Backbone.Model
     postToMasas: =>
         if @get('image')
             @get('image').uploadImage()
-
         else
             user = new User()
             $.ajax({

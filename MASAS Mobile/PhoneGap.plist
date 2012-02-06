@@ -20,6 +20,8 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>*.quickjack.ca</string>
+		<string>192.168.1.100</string>
 		<string>*.masas-sics.ca</string>
 		<string>*.masas.ca</string>
 		<string>*.googleapis.com</string>

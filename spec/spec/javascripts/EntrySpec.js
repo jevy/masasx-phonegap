@@ -33,7 +33,7 @@
           }),
           title: 'Some Test Post',
           description: 'My description',
-          location: new window.Geolocation({
+          location: new window.GoogleGeolocation({
             longitude: -78.3,
             latitude: 45.8
           }),

@@ -1,4 +1,4 @@
-class window.Geolocation extends Backbone.Model
+class window.GoogleGeolocation extends Backbone.Model
 
     geocode: ->
         address = @get('street') + ', ' + @get('city') + ', ' + @get('province') + ', CA'

@@ -18,19 +18,21 @@ class window.Image extends Backbone.Model
         @get('entry').set({image: this})
 
     uploadImage: =>
-        alert('About to upload') 
         options = new FileUploadOptions()
         options.fileName = 'image.jpeg'
         options.mimeType = 'image/jpeg'
+        params = new Object()
+        params.access_code = "iab6m5"
+        options.params = params
+
         file_uri = @get('file_location')
 
-        alert('Passed options') 
         user = new User()
         ft = new FileTransfer()
         ft.upload file_uri, 
-                  'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(), 
+                  #'http://192.168.1.100:9292/upload', 
+                  'http://masasproxy.quickjack.ca/upload', 
                   @uploadSuccess, @uploadFail, options
-        alert('Done upload') 
 
     uploadSuccess: (r) ->
         alert(r.response)

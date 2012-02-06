@@ -14,7 +14,6 @@
       this.capture_image = __bind(this.capture_image, this);
       this.autoLocateError = __bind(this.autoLocateError, this);
       this.autoLocateSuccess = __bind(this.autoLocateSuccess, this);
-      this.autoGeolocate = __bind(this.autoGeolocate, this);
       Entry.__super__.constructor.apply(this, arguments);
     }
     Entry.prototype.autoGeolocate = function() {
@@ -23,16 +22,15 @@
       });
     };
     Entry.prototype.autoLocateSuccess = function(position) {
-      alert("Found location");
       return this.set({
-        location: new Geolocation({
+        location: new GoogleGeolocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         })
       });
     };
     Entry.prototype.autoLocateError = function(error) {
-      alert("Could not find location");
+      alert("Could not find location because " + error);
       return this.unset(location);
     };
     Entry.prototype.capture_image = function() {

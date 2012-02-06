@@ -42,17 +42,17 @@
       });
     };
     Image.prototype.uploadImage = function() {
-      var file_uri, ft, options, user;
-      alert('About to upload');
+      var file_uri, ft, options, params, user;
       options = new FileUploadOptions();
       options.fileName = 'image.jpeg';
       options.mimeType = 'image/jpeg';
+      params = new Object();
+      params.access_code = "iab6m5";
+      options.params = params;
       file_uri = this.get('file_location');
-      alert('Passed options');
       user = new User();
       ft = new FileTransfer();
-      ft.upload(file_uri, 'https://sandbox2.masas-sics.ca/hub/feed?secret=' + user.currentUser(), this.uploadSuccess, this.uploadFail, options);
-      return alert('Done upload');
+      return ft.upload(file_uri, 'http://masasproxy.quickjack.ca/upload', this.uploadSuccess, this.uploadFail, options);
     };
     Image.prototype.uploadSuccess = function(r) {
       return alert(r.response);

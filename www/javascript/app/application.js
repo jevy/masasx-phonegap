@@ -229,12 +229,11 @@
     function SelectGeoView() {
       SelectGeoView.__super__.constructor.apply(this, arguments);
       this.el = $('div#select_geo');
-      $('#use_current_location').addClass('ui-disabled');
       this.delegateEvents();
     }
     SelectGeoView.prototype.manual_geolocate = function() {
       var location;
-      location = new Geolocation({
+      location = new GoogleGeolocation({
         street: $('input#street').val(),
         city: $('input#city').val(),
         province: $('input#province').val()
@@ -308,7 +307,6 @@
     function CaptureImageView() {
       CaptureImageView.__super__.constructor.apply(this, arguments);
       this.el = $('div#capture_image');
-      $('a#launch_image_capture').addClass('ui-disabled');
       app.currentEntry.bind('change', __bind(function() {
         return this.render();
       }, this));

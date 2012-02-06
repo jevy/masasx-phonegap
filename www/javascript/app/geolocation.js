@@ -7,12 +7,12 @@
     child.__super__ = parent.prototype;
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  window.Geolocation = (function() {
-    __extends(Geolocation, Backbone.Model);
-    function Geolocation() {
-      Geolocation.__super__.constructor.apply(this, arguments);
+  window.GoogleGeolocation = (function() {
+    __extends(GoogleGeolocation, Backbone.Model);
+    function GoogleGeolocation() {
+      GoogleGeolocation.__super__.constructor.apply(this, arguments);
     }
-    Geolocation.prototype.geocode = function() {
+    GoogleGeolocation.prototype.geocode = function() {
       var address, url;
       address = this.get('street') + ', ' + this.get('city') + ', ' + this.get('province') + ', CA';
       url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=false';
@@ -30,6 +30,6 @@
         async: false
       });
     };
-    return Geolocation;
+    return GoogleGeolocation;
   })();
 }).call(this);

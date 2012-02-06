@@ -126,11 +126,10 @@ class window.SelectGeoView extends Backbone.View
   constructor: ->
     super
     @el = $('div#select_geo')
-    $('#use_current_location').addClass('ui-disabled')  # Just until Phonegap fixes it
     @delegateEvents()
 
   manual_geolocate: ->
-    location = new Geolocation({street: $('input#street').val(), city: $('input#city').val(), province: $('input#province').val()})
+    location = new GoogleGeolocation({street: $('input#street').val(), city: $('input#city').val(), province: $('input#province').val()})
     location.geocode()
     app.currentEntry.set({location: location}) # Do geocode
     
@@ -202,7 +201,6 @@ class window.CaptureImageView extends Backbone.View
   constructor: ->
     super
     @el = $('div#capture_image')
-    $('a#launch_image_capture').addClass('ui-disabled')  # Just until we figure out multi-part posts
     app.currentEntry.bind('change', => this.render())
     @delegateEvents()
 
