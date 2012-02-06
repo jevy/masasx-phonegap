@@ -35,7 +35,9 @@
     };
     Entry.prototype.capture_image = function() {
       var new_image;
-      new_image = new Image(this);
+      new_image = new Image({
+        entry: this
+      });
       return new_image.capture();
     };
     Entry.prototype.postToMasas = function() {

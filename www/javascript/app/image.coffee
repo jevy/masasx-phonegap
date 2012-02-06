@@ -35,6 +35,7 @@ class window.Image extends Backbone.Model
 
     uploadSuccess: (r) =>
         @get('entry').set({edit_uri:r.response})
+        alert r.response
 
     uploadFail: (error) ->
         alert('upload failed because: ' + error.code)

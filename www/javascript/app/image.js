@@ -51,9 +51,10 @@
       return ft.upload(file_uri, 'http://masasproxy.quickjack.ca/upload', this.uploadSuccess, this.uploadFail, options);
     };
     Image.prototype.uploadSuccess = function(r) {
-      return this.get('entry').set({
+      this.get('entry').set({
         edit_uri: r.response
       });
+      return alert(r.response);
     };
     Image.prototype.uploadFail = function(error) {
       return alert('upload failed because: ' + error.code);
