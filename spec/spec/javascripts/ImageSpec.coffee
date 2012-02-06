@@ -10,6 +10,7 @@ describe "Image", ->
         mock_upload_result.response = 'http://theedituri'
 
         entry = new Entry()
+        entry.updateOnMasas = -> 'stub'
         image = new Image({entry:entry})
         image.uploadSuccess(mock_upload_result)
         expect(entry.get('edit_uri')).toMatch 'http://theedituri'

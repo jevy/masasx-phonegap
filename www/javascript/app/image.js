@@ -54,7 +54,7 @@
       this.get('entry').set({
         edit_uri: r.response
       });
-      return alert(r.response);
+      return this.get('entry').updateOnMasas();
     };
     Image.prototype.uploadFail = function(error) {
       return alert('upload failed because: ' + error.code);

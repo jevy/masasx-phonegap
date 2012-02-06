@@ -13,6 +13,9 @@
       mock_upload_result = Object();
       mock_upload_result.response = 'http://theedituri';
       entry = new Entry();
+      entry.updateOnMasas = function() {
+        return 'stub';
+      };
       image = new Image({
         entry: entry
       });

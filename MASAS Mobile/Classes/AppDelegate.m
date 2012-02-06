@@ -40,7 +40,7 @@
 	}
 	
     // Remove me after debugging
-    [NSClassFromString(@"WebView") _enableRemoteInspector];
+    //k[NSClassFromString(@"WebView") _enableRemoteInspector];
     
 	return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }

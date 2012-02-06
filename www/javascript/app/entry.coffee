@@ -26,6 +26,15 @@ class window.Entry extends Backbone.Model
                 data: this.generate_entry_xml(),
                 contentType: 'application/atom+xml'})
 
+    updateOnMasas: =>
+        user = new User()
+        $.ajax({
+            type: 'PUT',
+            url: @get('edit_uri') + '?secret=' + user.currentUser(),
+            async: false,
+            data: this.generate_entry_xml(),
+            contentType: 'application/atom+xml'})
+
     generate_entry_xml: ->
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\">" +
             "<category label=\"Status\" scheme=\"masas:category:status\" term=\"#{this.get('status').get('name')}\" />" +

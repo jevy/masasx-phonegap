@@ -10,6 +10,7 @@
   window.Entry = (function() {
     __extends(Entry, Backbone.Model);
     function Entry() {
+      this.updateOnMasas = __bind(this.updateOnMasas, this);
       this.postToMasas = __bind(this.postToMasas, this);
       this.capture_image = __bind(this.capture_image, this);
       this.autoLocateError = __bind(this.autoLocateError, this);
@@ -54,6 +55,17 @@
           contentType: 'application/atom+xml'
         });
       }
+    };
+    Entry.prototype.updateOnMasas = function() {
+      var user;
+      user = new User();
+      return $.ajax({
+        type: 'PUT',
+        url: this.get('edit_uri') + '?secret=' + user.currentUser(),
+        async: false,
+        data: this.generate_entry_xml(),
+        contentType: 'application/atom+xml'
+      });
     };
     Entry.prototype.generate_entry_xml = function() {
       return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\">" + ("<category label=\"Status\" scheme=\"masas:category:status\" term=\"" + (this.get('status').get('name')) + "\" />") + ("<category label=\"Severity\" scheme=\"masas:category:severity\" term=\"" + (this.get('severity').get('name')) + "\" />") + ("<category label=\"Certainty\" scheme=\"masas:category:certainty\" term=\"" + (this.get('certainty').get('name')) + "\" />") + ("<category label=\"Category\" scheme=\"masas:category:category\" term=\"" + (this.get('category').get('event_code')) + "\" />") + ("<category label=\"Icon\" scheme=\"masas:category:icon\" term=\"" + (this.get('subcategory').get('event_code')) + "\" />") + ("<title type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">" + (this.get('title')) + "</div></div></title>") + ("<content type=\"xhtml\"><div xmlns=\"http://www.w3.org/1999/xhtml\"><div xml:lang=\"en\">" + (this.get('description')) + "</div></div></content>") + ("<point xmlns=\"http://www.georss.org/georss\">" + (this.get('location').get('latitude')) + " " + (this.get('location').get('longitude')) + "</point>") + ("<expires xmlns=\"http://purl.org/atompub/age/1.0\">" + (Date.today().add(7).days().toISOString()) + "</expires>") + "</entry>";
