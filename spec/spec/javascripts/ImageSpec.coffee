@@ -2,13 +2,15 @@ describe "Image", ->
 
     it "saves the entry it is assigned on create", ->
         entry = new Entry()
-        image = new Image(entry)
-        expect(image.get('entry')).toNotBe null
+        image = new Image({entry:entry})
+        expect(image.get('entry')).toNotBe undefined
 
     it "saves the edit url to the entry on save", ->
+        mock_upload_result = Object()
+        mock_upload_result.response = 'http://theedituri'
+
         entry = new Entry()
-        image = new Image(entry)
-        mock(response).response = 'http://theedituri'
-        image.uploadSuccess(mock_response)
-        expect(entry.get('editUri')).toMatch 'http://sandbox'
+        image = new Image({entry:entry})
+        image.uploadSuccess(mock_upload_result)
+        expect(entry.get('edit_uri')).toMatch 'http://theedituri'
         

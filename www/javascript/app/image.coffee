@@ -3,9 +3,9 @@ class window.Image extends Backbone.Model
     defaults:
         "file_location" : null
 
-    initialize: (entry_for_image) ->
-        @set({entry: entry_for_image})
-
+    # Be sure to initialize by assigning an entry that 
+    # will be associated with the image
+    
     capture: =>
         navigator.camera.getPicture @onPhotoURISuccess, @onFail, 
             quality: 40, destinationType: Camera.DestinationType.FILE_URI
@@ -30,12 +30,11 @@ class window.Image extends Backbone.Model
         user = new User()
         ft = new FileTransfer()
         ft.upload file_uri, 
-                  #'http://192.168.1.100:9292/upload', 
                   'http://masasproxy.quickjack.ca/upload', 
                   @uploadSuccess, @uploadFail, options
 
-    uploadSuccess: (r) ->
-        alert(r.response)
+    uploadSuccess: (r) =>
+        @get('entry').set({edit_uri:r.response})
 
     uploadFail: (error) ->
         alert('upload failed because: ' + error.code)

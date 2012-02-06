@@ -3,16 +3,21 @@
     it("saves the entry it is assigned on create", function() {
       var entry, image;
       entry = new Entry();
-      image = new Image(entry);
-      return expect(image.get('entry')).toNotBe(null);
+      image = new Image({
+        entry: entry
+      });
+      return expect(image.get('entry')).toNotBe(void 0);
     });
     return it("saves the edit url to the entry on save", function() {
-      var entry, image;
+      var entry, image, mock_upload_result;
+      mock_upload_result = Object();
+      mock_upload_result.response = 'http://theedituri';
       entry = new Entry();
-      image = new Image(entry);
-      mock(response).response = 'http://theedituri';
-      image.uploadSuccess(mock_response);
-      return expect(entry.get('editUri')).toMatch('http://sandbox');
+      image = new Image({
+        entry: entry
+      });
+      image.uploadSuccess(mock_upload_result);
+      return expect(entry.get('edit_uri')).toMatch('http://theedituri');
     });
   });
 }).call(this);

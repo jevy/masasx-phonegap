@@ -10,6 +10,7 @@
   window.Image = (function() {
     __extends(Image, Backbone.Model);
     function Image() {
+      this.uploadSuccess = __bind(this.uploadSuccess, this);
       this.uploadImage = __bind(this.uploadImage, this);
       this.onPhotoURISuccess = __bind(this.onPhotoURISuccess, this);
       this.onFail = __bind(this.onFail, this);
@@ -18,11 +19,6 @@
     }
     Image.prototype.defaults = {
       "file_location": null
-    };
-    Image.prototype.initialize = function(entry_for_image) {
-      return this.set({
-        entry: entry_for_image
-      });
     };
     Image.prototype.capture = function() {
       return navigator.camera.getPicture(this.onPhotoURISuccess, this.onFail, {
@@ -55,7 +51,9 @@
       return ft.upload(file_uri, 'http://masasproxy.quickjack.ca/upload', this.uploadSuccess, this.uploadFail, options);
     };
     Image.prototype.uploadSuccess = function(r) {
-      return alert(r.response);
+      return this.get('entry').set({
+        edit_uri: r.response
+      });
     };
     Image.prototype.uploadFail = function(error) {
       return alert('upload failed because: ' + error.code);
