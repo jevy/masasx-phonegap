@@ -18,11 +18,12 @@ class window.Image extends Backbone.Model
         @get('entry').set({image: this})
 
     uploadImage: =>
+        user = new User()
         options = new FileUploadOptions()
         options.fileName = 'image.jpeg'
         options.mimeType = 'image/jpeg'
         params = new Object()
-        params.access_code = "iab6m5"
+        params.access_code = user.currentUser()
         options.params = params
 
         file_uri = @get('file_location')

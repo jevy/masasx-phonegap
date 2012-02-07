@@ -39,11 +39,12 @@
     };
     Image.prototype.uploadImage = function() {
       var file_uri, ft, options, params, user;
+      user = new User();
       options = new FileUploadOptions();
       options.fileName = 'image.jpeg';
       options.mimeType = 'image/jpeg';
       params = new Object();
-      params.access_code = "iab6m5";
+      params.access_code = user.currentUser();
       options.params = params;
       file_uri = this.get('file_location');
       user = new User();
