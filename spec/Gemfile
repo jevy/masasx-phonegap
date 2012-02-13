@@ -1,2 +1,4 @@
+source :rubygems
 gem 'jasmine-headless-webkit'
 gem 'therubyracer'
+gem 'jasmine'
