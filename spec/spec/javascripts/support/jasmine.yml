@@ -16,7 +16,16 @@ src_files:
     - vendor/backbone-min.js
     - vendor/backbone.localStorage-min.js
     - vendor/date/date.js
-    - app/*.js
+    - app/category.js
+    - app/certainty.js
+    - app/status.js
+    - app/severity.js
+    - app/subcategory.js
+    - app/user.js
+    - app/entry.js
+    - app/geolocation.js
+    - app/application.js
+    - app/image.js
     #- app/application.js
 
 # stylesheets
