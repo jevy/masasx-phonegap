@@ -273,10 +273,21 @@ class window.DetailInputView extends Backbone.View
 
 class window.LocalMapView extends Backbone.View
   initialize: ->
-    $('#map_canvas').gmap({'center': '59.3426606750, 18.0736160278'});
+    @el = $('div#local_map')
+    myOptions = {
+          center: new google.maps.LatLng(45.4, -75.6),
+          zoom: 9,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+    @map = new google.maps.Map(document.getElementById("map_canvas"), myOptions)
 				
   render: ->
-    $('#map_canvas').gmap('refresh');
+    $('#map_canvas').height($(window).height()-this.$('div[data-role=header]').height())
+    $('#map_canvas').width($(window).width())
+    google.maps.event.trigger(@map, 'resize')
+    user = new User()
+    georssLayer = new google.maps.KmlLayer('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser())
+    georssLayer.setMap(@map)
 
 #
 # Start the app

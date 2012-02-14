@@ -413,12 +413,23 @@
       LocalMapView.__super__.constructor.apply(this, arguments);
     }
     LocalMapView.prototype.initialize = function() {
-      return $('#map_canvas').gmap({
-        'center': '59.3426606750, 18.0736160278'
-      });
+      var myOptions;
+      this.el = $('div#local_map');
+      myOptions = {
+        center: new google.maps.LatLng(45.4, -75.6),
+        zoom: 9,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      return this.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     };
     LocalMapView.prototype.render = function() {
-      return $('#map_canvas').gmap('refresh');
+      var georssLayer, user;
+      $('#map_canvas').height($(window).height() - this.$('div[data-role=header]').height());
+      $('#map_canvas').width($(window).width());
+      google.maps.event.trigger(this.map, 'resize');
+      user = new User();
+      georssLayer = new google.maps.KmlLayer('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser());
+      return georssLayer.setMap(this.map);
     };
     return LocalMapView;
   })();
