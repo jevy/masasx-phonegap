@@ -14,6 +14,8 @@
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/backbone.localStorage-min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/date/date.js"></script>
         <script type='text/javascript' charset='utf-8' src='javascript/vendor/jquery.mobile-1.0rc1.min.js'></script>
+        <script type='text/javascript' src='javascript/vendor/jquery.ui.map.js'></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 
         <script type="text/javascript" charset="utf-8">
             document.write("<script type='text/javascript' charset='utf-8' src='javascript/app/geolocation.js?" + Math.random() + "'></" + "script>");
@@ -56,6 +58,7 @@
             What would you like to do?
             <ul data-role="listview" data-inset="true">
                 <li><a href="#select_geo">Add Event</a></li>
+                <li><a href="#local_map">Map of Events</a></li>
             </ul>
         </div>
     </div>
@@ -128,6 +131,11 @@
             <p><a href="#operation_selection" id='send_to_masas' data-role="button">Send to MASAS</a></p>
         </div>
     </div>
+
+    <div data-role='page' id='local_map' data-add-back-btn="true">
+        <div id="map_canvas" style="width:250px;height:250px"></div>
+    </div>
+
     <div data-role="page" id='custom_error' class='custom_error'>
         <div data-role="header">
             <h1>Error</h1>

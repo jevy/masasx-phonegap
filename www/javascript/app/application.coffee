@@ -25,6 +25,8 @@ app =
                                 { "#select_geo"  : "select_geo" },
                                 { "#confirm_geo" : "confirm_geo" }, 
                                 { "#capture_image" : "capture_image" }, 
+                                { "#local_map" : {events: 'c', handler: "init_map"} }, 
+                                { "#local_map" : {events: 's', handler: "refresh_map"} }, 
                                 { "#detail_input": {events: 'bc', handler: "detail_input" } }
                               ],
 
@@ -64,6 +66,14 @@ app =
                                                     return
                                                 app.currentView = new DetailInputView()
                                                 app.currentView.render()
+                        
+                                init_map:      (eventType, matchObj, ui, page) ->  
+                                                app.currentView = new LocalMapView()
+
+                                refresh_map:    (eventType, matchObj, ui, page) ->  
+                                                # Assuming currentView is still LocalMapView
+                                                app.currentView.render()
+
                              )
 
 #
@@ -260,6 +270,13 @@ class window.DetailInputView extends Backbone.View
                         })
     app.currentEntry.postToMasas()
     app.statusMessage = "Successfully posted to MASAS"
+
+class window.LocalMapView extends Backbone.View
+  initialize: ->
+    $('#map_canvas').gmap({'center': '59.3426606750, 18.0736160278'});
+				
+  render: ->
+    $('#map_canvas').gmap('refresh');
 
 #
 # Start the app

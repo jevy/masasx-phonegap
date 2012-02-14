@@ -7,29 +7,29 @@
     child.__super__ = parent.prototype;
     return child;
   };
-  window.Image = (function() {
-    __extends(Image, Backbone.Model);
-    function Image() {
+  window.AttachmentImage = (function() {
+    __extends(AttachmentImage, Backbone.Model);
+    function AttachmentImage() {
       this.uploadSuccess = __bind(this.uploadSuccess, this);
       this.uploadImage = __bind(this.uploadImage, this);
       this.onPhotoURISuccess = __bind(this.onPhotoURISuccess, this);
       this.onFail = __bind(this.onFail, this);
       this.capture = __bind(this.capture, this);
-      Image.__super__.constructor.apply(this, arguments);
+      AttachmentImage.__super__.constructor.apply(this, arguments);
     }
-    Image.prototype.defaults = {
+    AttachmentImage.prototype.defaults = {
       "file_location": null
     };
-    Image.prototype.capture = function() {
+    AttachmentImage.prototype.capture = function() {
       return navigator.camera.getPicture(this.onPhotoURISuccess, this.onFail, {
         quality: 40,
         destinationType: Camera.DestinationType.FILE_URI
       });
     };
-    Image.prototype.onFail = function(message) {
+    AttachmentImage.prototype.onFail = function(message) {
       return alert('Failed because: ' + message);
     };
-    Image.prototype.onPhotoURISuccess = function(imageURI) {
+    AttachmentImage.prototype.onPhotoURISuccess = function(imageURI) {
       this.set({
         file_location: imageURI
       });
@@ -37,7 +37,7 @@
         image: this
       });
     };
-    Image.prototype.uploadImage = function() {
+    AttachmentImage.prototype.uploadImage = function() {
       var file_uri, ft, options, params, user;
       user = new User();
       options = new FileUploadOptions();
@@ -51,15 +51,15 @@
       ft = new FileTransfer();
       return ft.upload(file_uri, 'http://masasproxy.quickjack.ca/upload', this.uploadSuccess, this.uploadFail, options);
     };
-    Image.prototype.uploadSuccess = function(r) {
+    AttachmentImage.prototype.uploadSuccess = function(r) {
       this.get('entry').set({
         edit_uri: r.response
       });
       return this.get('entry').updateOnMasas();
     };
-    Image.prototype.uploadFail = function(error) {
+    AttachmentImage.prototype.uploadFail = function(error) {
       return alert('upload failed because: ' + error.code);
     };
-    return Image;
+    return AttachmentImage;
   })();
 }).call(this);

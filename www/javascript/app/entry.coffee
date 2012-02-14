@@ -11,7 +11,7 @@ class window.Entry extends Backbone.Model
         @unset(location)
 
     capture_image: =>
-        new_image = new Image({entry:this})
+        new_image = new AttachmentImage({entry:this})
         new_image.capture()
 
     postToMasas: =>

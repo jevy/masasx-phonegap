@@ -116,6 +116,16 @@
       }, {
         "#capture_image": "capture_image"
       }, {
+        "#local_map": {
+          events: 'c',
+          handler: "init_map"
+        }
+      }, {
+        "#local_map": {
+          events: 's',
+          handler: "refresh_map"
+        }
+      }, {
         "#detail_input": {
           events: 'bc',
           handler: "detail_input"
@@ -160,6 +170,12 @@
           return;
         }
         app.currentView = new DetailInputView();
+        return app.currentView.render();
+      },
+      init_map: function(eventType, matchObj, ui, page) {
+        return app.currentView = new LocalMapView();
+      },
+      refresh_map: function(eventType, matchObj, ui, page) {
         return app.currentView.render();
       }
     })
@@ -390,6 +406,21 @@
       return app.statusMessage = "Successfully posted to MASAS";
     };
     return DetailInputView;
+  })();
+  window.LocalMapView = (function() {
+    __extends(LocalMapView, Backbone.View);
+    function LocalMapView() {
+      LocalMapView.__super__.constructor.apply(this, arguments);
+    }
+    LocalMapView.prototype.initialize = function() {
+      return $('#map_canvas').gmap({
+        'center': '59.3426606750, 18.0736160278'
+      });
+    };
+    LocalMapView.prototype.render = function() {
+      return $('#map_canvas').gmap('refresh');
+    };
+    return LocalMapView;
   })();
   $(document).ready(function() {
     var user;

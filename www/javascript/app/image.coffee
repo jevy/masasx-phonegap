@@ -1,4 +1,4 @@
-class window.Image extends Backbone.Model
+class window.AttachmentImage extends Backbone.Model
 
     defaults:
         "file_location" : null

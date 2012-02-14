@@ -36,7 +36,7 @@
     };
     Entry.prototype.capture_image = function() {
       var new_image;
-      new_image = new Image({
+      new_image = new AttachmentImage({
         entry: this
       });
       return new_image.capture();
