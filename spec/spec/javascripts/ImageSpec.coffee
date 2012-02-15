@@ -1,8 +1,8 @@
-describe "Image", ->
+describe "AttachmentImage", ->
 
     it "saves the entry it is assigned on create", ->
         entry = new Entry()
-        image = new Image({entry:entry})
+        image = new AttachmentImage({entry:entry})
         expect(image.get('entry')).toNotBe undefined
 
     it "saves the edit url to the entry on save", ->
@@ -11,7 +11,7 @@ describe "Image", ->
 
         entry = new Entry()
         entry.updateOnMasas = -> 'stub'
-        image = new Image({entry:entry})
+        image = new AttachmentImage({entry:entry})
         image.uploadSuccess(mock_upload_result)
         expect(entry.get('edit_uri')).toMatch 'http://theedituri'
         

@@ -1,9 +1,9 @@
 (function() {
-  describe("Image", function() {
+  describe("AttachmentImage", function() {
     it("saves the entry it is assigned on create", function() {
       var entry, image;
       entry = new Entry();
-      image = new Image({
+      image = new AttachmentImage({
         entry: entry
       });
       return expect(image.get('entry')).toNotBe(void 0);
@@ -16,7 +16,7 @@
       entry.updateOnMasas = function() {
         return 'stub';
       };
-      image = new Image({
+      image = new AttachmentImage({
         entry: entry
       });
       image.uploadSuccess(mock_upload_result);
