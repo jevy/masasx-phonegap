@@ -14,7 +14,7 @@ src_files:
     - vendor/jquery-1.6.4.min.js
     - vendor/underscore-min.js
     - vendor/backbone-min.js
-    - vendor/backbone.localStorage-min.js
+    #- vendor/backbone.localStorage-min.js
     - vendor/date/date.js
     - app/category.js
     - app/certainty.js
@@ -26,6 +26,7 @@ src_files:
     - app/geolocation.js
     - app/application.js
     - app/image.js
+    - app/masasGeoRssFeed.js
     #- app/application.js
 
 # stylesheets
