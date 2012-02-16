@@ -3,7 +3,7 @@ class window.MasasGeoRssFeed
   constructor: (@feedUrl) ->
 
   extractEntries: (rawXML) =>
-    entriesSelectors = $(rawXML).find( "entry" )
+    entriesSelectors = $(rawXML).find("entry:has('georss\\:point')")
     entries = []
     entries.push this.extractEntryFromXML entrySelector for entrySelector in entriesSelectors 
     entry = new Entry()

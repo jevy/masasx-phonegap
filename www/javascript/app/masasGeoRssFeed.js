@@ -7,7 +7,7 @@
     }
     MasasGeoRssFeed.prototype.extractEntries = function(rawXML) {
       var entries, entriesSelectors, entry, entrySelector, _i, _len;
-      entriesSelectors = $(rawXML).find("entry");
+      entriesSelectors = $(rawXML).find("entry:has('georss\\:point')");
       entries = [];
       for (_i = 0, _len = entriesSelectors.length; _i < _len; _i++) {
         entrySelector = entriesSelectors[_i];
