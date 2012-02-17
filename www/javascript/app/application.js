@@ -410,11 +410,17 @@
   window.LocalMapView = (function() {
     __extends(LocalMapView, Backbone.View);
     function LocalMapView() {
+      this.plotEntriesOnMap = __bind(this.plotEntriesOnMap, this);
+      this.resetGeoRssLayer = __bind(this.resetGeoRssLayer, this);
       LocalMapView.__super__.constructor.apply(this, arguments);
     }
     LocalMapView.prototype.initialize = function() {
-      var myOptions;
+      var myOptions, user;
       this.el = $('div#local_map');
+      user = new User();
+      this.feed = new MasasGeoRssFeed('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser());
+      this.feed.bind('change', this.resetGeoRssLayer);
+      this.feed.saveEntries();
       myOptions = {
         center: new google.maps.LatLng(45.4, -75.6),
         zoom: 9,
@@ -423,13 +429,30 @@
       return this.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     };
     LocalMapView.prototype.render = function() {
-      var georssLayer, user;
       $('#map_canvas').height($(window).height() - this.$('div[data-role=header]').height());
       $('#map_canvas').width($(window).width());
-      google.maps.event.trigger(this.map, 'resize');
-      user = new User();
-      georssLayer = new google.maps.KmlLayer('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser());
-      return georssLayer.setMap(this.map);
+      return google.maps.event.trigger(this.map, 'resize');
+    };
+    LocalMapView.prototype.resetGeoRssLayer = function() {
+      return this.plotEntriesOnMap(this.map, this.feed.entries);
+    };
+    LocalMapView.prototype.plotEntriesOnMap = function(map, entries) {
+      var entry, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = entries.length; _i < _len; _i++) {
+        entry = entries[_i];
+        _results.push(this.plot(map, entry));
+      }
+      return _results;
+    };
+    LocalMapView.prototype.plot = function(map, entry) {
+      var marker;
+      return marker = new google.maps.Marker({
+        position: new google.maps.LatLng(entry.get('location').get('latitude'), entry.get('location').get('longitude')),
+        map: map,
+        title: entry.get('displayHtml'),
+        icon: entry.get('icon')
+      });
     };
     return LocalMapView;
   })();
@@ -440,11 +463,10 @@
     });
     user = new User();
     if (user.currentUser() !== null) {
-      $.mobile.changePage($('#operation_selection'));
+      return $.mobile.changePage($('#operation_selection'));
     } else {
-      $.mobile.changePage($('#secret_input'));
+      return $.mobile.changePage($('#secret_input'));
     }
-    return end;
   });
   this.app = app;
 }).call(this);

@@ -272,8 +272,13 @@ class window.DetailInputView extends Backbone.View
     app.statusMessage = "Successfully posted to MASAS"
 
 class window.LocalMapView extends Backbone.View
+
   initialize: ->
     @el = $('div#local_map')
+    user = new User()
+    @feed = new MasasGeoRssFeed('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser())
+    @feed.bind('change', this.resetGeoRssLayer)
+    @feed.saveEntries()
     myOptions = {
           center: new google.maps.LatLng(45.4, -75.6),
           zoom: 9,
@@ -285,9 +290,20 @@ class window.LocalMapView extends Backbone.View
     $('#map_canvas').height($(window).height()-this.$('div[data-role=header]').height())
     $('#map_canvas').width($(window).width())
     google.maps.event.trigger(@map, 'resize')
-    user = new User()
-    georssLayer = new google.maps.KmlLayer('https://sandbox2.masas-sics.ca/hub/feed?lat=45.442&lon=-75.605&radius=500000&secret=' + user.currentUser())
-    georssLayer.setMap(@map)
+
+  resetGeoRssLayer: =>
+    this.plotEntriesOnMap(@map, @feed.entries)
+
+  plotEntriesOnMap: (map, entries) =>
+    this.plot(map,entry) for entry in entries 
+
+  plot: (map, entry) ->
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(entry.get('location').get('latitude'),entry.get('location').get('longitude')),
+      map: map,
+      title: entry.get('displayHtml'),
+      icon: entry.get('icon')
+    })
 
 #
 # Start the app
@@ -303,6 +319,5 @@ $(document).ready ->
     $.mobile.changePage($('#operation_selection'))
   else
     $.mobile.changePage($('#secret_input'))
-  end
   
 @app = app
