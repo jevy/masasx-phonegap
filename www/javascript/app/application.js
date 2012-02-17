@@ -446,12 +446,17 @@
       return _results;
     };
     LocalMapView.prototype.plot = function(map, entry) {
-      var marker;
-      return marker = new google.maps.Marker({
+      var infowindow, marker;
+      marker = new google.maps.Marker({
         position: new google.maps.LatLng(entry.get('location').get('latitude'), entry.get('location').get('longitude')),
         map: map,
-        title: entry.get('displayHtml'),
         icon: entry.get('icon')
+      });
+      infowindow = new google.maps.InfoWindow({
+        content: entry.get('displayHtml')
+      });
+      return google.maps.event.addListener(marker, 'click', function() {
+        return infowindow.open(map, marker);
       });
     };
     return LocalMapView;

@@ -301,9 +301,16 @@ class window.LocalMapView extends Backbone.View
     marker = new google.maps.Marker({
       position: new google.maps.LatLng(entry.get('location').get('latitude'),entry.get('location').get('longitude')),
       map: map,
-      title: entry.get('displayHtml'),
+      #title: entry.get('displayHtml'),
       icon: entry.get('icon')
     })
+
+    infowindow = new google.maps.InfoWindow
+        content: entry.get('displayHtml')
+
+    google.maps.event.addListener marker, 'click', ->
+        infowindow.open(map,marker)
+    
 
 #
 # Start the app
