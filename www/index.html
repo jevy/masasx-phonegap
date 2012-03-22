@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta charset="utf-8">
         <link rel="stylesheet" href="css/jquery.mobile-1.0rc1.min.css" />
+        <link rel="stylesheet" href="css/extra_tweaks.css" />
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/phonegap-1.2.0.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="javascript/vendor/jquery.mobile.router.js"></script>
@@ -45,6 +46,7 @@
                     <input id="entry_secret" name="entry[secret]" size="15" type="text" minlength="4" class="required" />
                 </p> 
                 <p><a href="#operation_selection" id='next' data-role="button">Next</a></p>
+                <img src="drdc_logo.jpg" id='logo'>
             </form>
         </div>
     </div>
@@ -61,6 +63,9 @@
                 <li><a href="#local_map">Map of Events</a></li>
             </ul>
         </div>
+        <div data-role="footer"> 
+            <h4>Powered by CSS</h4> 
+        </div> 
     </div>
 
     <div data-role='page' id='select_geo' data-add-back-btn="true">
